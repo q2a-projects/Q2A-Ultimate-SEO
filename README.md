@@ -14,16 +14,14 @@ if you are not a developer I suggest that you wait for beta or final version.
 
 ## Author
 This free theme is created by [Towhid Nategheian](http://TowhidN.com "Freelance Question2Answer Developer"), from [QA-Themes.com](http://QA-Themes.com "Question2Answer Themes and Plugins"). we create professional Question2Answer Themes and plugins.
-* Our [Q2A Themes](http://QA-Themes.com "Question2Answer Themes")
-* free [Q2A Plugins](http://QA-Themes.com "Free Question2Answer Plugins")
+* [Question2Answer Themes](http://QA-Themes.com "Question2Answer Themes")
+* [Question2Answer Plugins](http://QA-Themes.com "Free Question2Answer Plugins")
 
 ### Copyright
 this plugin and all it's source code is published under *MIT License*. you are free to use it in any way you like, just don't remove the attribution link.
 
 ### Disclaimer
 This product is a free and is published without any warranties. if come to pass any problems get help on http://www.question2answer.org/qa/ or submit the issue here in github.
-
-### About Q2A
 
 ### About Q2A
 **[Question2Answer](http://qa-themes.com/question2answer  "Q2A Script Features")**  is a free and open source platform for creating Question & Answer sites. For more information, visit it's official site at http://www.question2answer.org/
