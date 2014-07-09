@@ -1,0 +1,1 @@
+This plugin is developed by <a href="http://towhidn.com">Towhid Nategheian</a> from <a href="http://qa-themes.com">QA-Themes.com</a>

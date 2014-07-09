@@ -1,0 +1,351 @@
+﻿/* layout fix : remove sidebar */
+.qa-main {
+    width: 100%;
+}
+.qa-sidepanel {
+    display: none;
+}
+
+/* Responsive Tab */
+ul.resp-tabs-list, p {
+    margin: 0px;
+    padding: 0px;
+}
+
+.resp-tabs-list li {
+    font-weight: 600;
+    font-size: 13px;
+    display: inline-block;
+    padding: 13px 15px;
+    margin: 0;
+    list-style: none;
+    cursor: pointer;
+    float: left;
+}
+
+.resp-tabs-container {
+    padding: 0px;
+    background-color: #fff;
+    clear: left;
+}
+
+h2.resp-accordion {
+    cursor: pointer;
+    padding: 5px;
+    display: none;
+}
+
+.resp-tab-content {
+    display: none;
+    padding: 15px;
+}
+
+.resp-tab-active {
+    border: 1px solid #c1c1c1;
+    border-bottom: none;
+    margin-bottom: -1px !important;
+    padding: 12px 14px 14px 14px !important;
+}
+
+.resp-tab-active {
+    border-bottom: none;
+    background-color: #fff;
+}
+
+.resp-content-active, .resp-accordion-active {
+    display: block;
+}
+
+.resp-tab-content {
+    border: 1px solid #c1c1c1;
+}
+
+h2.resp-accordion {
+    font-size: 13px;
+    border: 1px solid #c1c1c1;
+    border-top: 0px solid #c1c1c1;
+    margin: 0px;
+    padding: 10px 15px;
+}
+
+h2.resp-tab-active {
+    border-bottom: 0px solid #c1c1c1 !important;
+    margin-bottom: 0px !important;
+    padding: 10px 15px !important;
+}
+
+h2.resp-tab-title:last-child {
+    border-bottom: 12px solid #c1c1c1 !important;
+    background: blue;
+}
+/*-----------Vertical tabs-----------*/
+.resp-vtabs ul.resp-tabs-list {
+    float: left;
+	margin-top: 7px;
+    width: 20%;
+}
+
+.resp-vtabs .resp-tabs-list li {
+    padding: 10px 0 10px 10px;
+    margin: 0;
+    cursor: pointer;
+    float: none;
+	width: 100%;
+}
+
+.resp-vtabs .resp-tabs-container {
+    background-color: #fff;
+    border: 1px solid #c1c1c1;
+    border-radius: 4px;
+    clear: none;
+    float: left;
+    min-height: 650px;
+    padding: 0;
+    position: relative;
+    width: 78%;
+}
+
+.resp-vtabs .resp-tab-content {
+    border: none;
+}
+
+.resp-tab-item > span {
+    clear: both;
+    float: left;
+    font-size: 70%;
+    width: 100%;
+}
+.resp-vtabs li.resp-tab-active {
+	color: #D13636;
+    border-color: #C1C1C1 #FFFFFF #C1C1C1 #F44343;
+    border-image: none;
+    border-style: solid solid solid solid;
+    border-width: 1px 1px 1px 3px;
+    background-color: #fff;
+	min-width: 146px;
+    z-index: 1;
+    margin-right: -1px !important;
+    padding: 14px 15px 15px 14px !important;
+}
+
+.resp-arrow {
+    width: 0;
+    height: 0;
+    float: right;
+    margin-top: 3px;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 12px solid #c1c1c1;
+}
+
+h2.resp-tab-active span.resp-arrow {
+    border: none;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 12px solid #9B9797;
+}
+
+/*-----------Accordion styles-----------*/
+h2.resp-tab-active {
+    background: #DBDBDB !important;
+}
+.resp-easy-accordion  h2.resp-accordion {
+        display: block;
+}
+.resp-easy-accordion .resp-tab-content {
+    border: 1px solid #c1c1c1;
+}
+
+.resp-easy-accordion .resp-tab-content:last-child {
+    border-bottom: 1px solid #c1c1c1 !important;
+}
+
+.resp-jfit {
+    width: 100%;
+    margin: 0px;
+}
+
+.resp-tab-content-active {
+    display: block;
+}
+
+h2.resp-accordion:first-child {
+    border-top: 1px solid #c1c1c1 !important;
+}
+
+/*Here your can change the breakpoint to set the accordion, when screen resolution changed*/
+@media only screen and (max-width: 768px) {
+    ul.resp-tabs-list {
+        display: none;
+    }
+
+    h2.resp-accordion {
+        display: block;
+    }
+
+    .resp-vtabs .resp-tab-content {
+        border: 1px solid #C1C1C1;
+    }
+
+    .resp-vtabs .resp-tabs-container {
+        border: none;
+        float: none;
+        width: 100%;
+        min-height: initial;
+        clear: none;
+    }
+    .resp-accordion-closed {
+        display:none !important;
+    }
+    .resp-vtabs .resp-tab-content:last-child {
+        border-bottom: 1px solid #c1c1c1 !important;
+    }
+}
+
+/* option pages */
+hr {
+    clear: both;
+    color: #fff;
+    margin: 10px 0;
+}
+input[type=checkbox] {
+	visibility: hidden;
+}
+h2 {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border-color: -moz-use-text-color -moz-use-text-color #ddd;
+    border-image: none;
+    border-radius: 0;
+    border-style: none none solid;
+    border-width: medium medium 1px;
+    box-shadow: none;
+    clear: both;
+    color: #444;
+    padding: 0 0 10px 10px;
+}
+.qa-form-tall-ok {
+    margin: 10px 5%;
+}
+.useo-right{
+    float: right;
+}
+.useo-btn{
+	
+}
+.qseo-buttons-container {
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-radius: 0 0 5px 5px;
+    border-right: 1px solid #ddd;
+    display: inline-block;
+    float: right;
+    margin: 0 5%;
+    padding: 5px;
+    width: 68%;
+}
+.useo-checkbox-container {
+	width: 80px;
+	height: 26px;
+	background: #333;
+    float: left;
+    margin: 2px 10px;
+
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+	position: relative;
+
+	-webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
+	-moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
+	box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
+}
+
+.useo-checkbox-container:after {
+	content: 'OFF';
+	font: 12px/26px Arial, sans-serif;
+	color: #000;
+	position: absolute;
+	right: 10px;
+	z-index: 0;
+	font-weight: bold;
+	text-shadow: 1px 1px 0px rgba(255,255,255,.15);
+}
+
+.useo-checkbox-container:before {
+	content: 'ON';
+	font: 12px/26px Arial, sans-serif;
+	color: #00bf00;
+	position: absolute;
+	left: 10px;
+	z-index: 0;
+	font-weight: bold;
+}
+
+.useo-checkbox-container label {
+	display: block;
+	width: 34px;
+	height: 20px;
+
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+
+	-webkit-transition: all .4s ease;
+	-moz-transition: all .4s ease;
+	-o-transition: all .4s ease;
+	-ms-transition: all .4s ease;
+	transition: all .4s ease;
+	cursor: pointer;
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	z-index: 1;
+
+	-webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
+	-moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
+	box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
+	background: #fcfff4;
+
+	background: -webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+	background: -moz-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+	background: -o-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+	background: -ms-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+	background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#b3bead',GradientType=0 );
+}
+
+.useo-checkbox-container input[type=checkbox]:checked + label {
+	left: 43px;
+}
+.useo-option-container {
+    display: inline-block;
+    padding: 5px 0;
+    width: 100%;
+}
+.useo-option-detail {
+    color: #666;
+	float: left;
+    width: 30%;
+}
+.useo-option-content {
+    float: left;
+    width: 70%;
+}
+.useo-option-extra-detail {
+	color: #777;
+    float: right;
+    width: 70%;	
+}
+.useo-option-recommended {
+    color: #090;
+    font-size: 12px;
+    line-height: 28px;
+}
+.useo-option-not-recommended {
+    color: #c00;
+    font-size: 12px;
+    line-height: 28px;
+}
+.useo-text , .useo-list{
+    width: 50%;
+}
