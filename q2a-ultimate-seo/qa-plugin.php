@@ -3,7 +3,7 @@
 /*              
     Plugin Name: Q2A Ultimate SEO
     Plugin URI: https://github.com/Towhidn/Q2A-Ultimate-SEO/
-    Plugin Update Check URI:  https://github.com/Towhidn/Q2A-Ultimate-SEO/blob/master/q2a-ultimate-seo/qa-plugin.php
+    Plugin Update Check URI: https://raw.githubusercontent.com/Towhidn/Q2A-Ultimate-SEO/master/q2a-ultimate-seo/qa-plugin.php
     Plugin Description: Question2Answer SEO Plugin
     Plugin Version: 1.0.1
     Plugin Date: 2014-7-9
