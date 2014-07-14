@@ -30,6 +30,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 	}
 	function head_title()
 	{
+		// Title Customization Options
 		$title = '';
 		switch ($this->template) {
 			case 'qa':
@@ -188,12 +189,57 @@ class qa_html_theme_layer extends qa_html_theme_base {
 		//for category item
 		if( ( (isset($this->content["categoryids"])) && (!(empty($this->content["categoryids"]))) ) || ( (count($req)>1) && ( ($this->request=='activity') || ($this->request=='questions') || ($this->request=='unanswered') ) ) )
 			echo("it's a category");
-			
 		
 		if(empty($title))
 			qa_html_theme_base::head_title();
 		else
 			$this->output('<title>'.$title.'</title>');
+		
+		
+		// Page Meta Tags
+		$noindex = qa_opt('useo_access_noindex');
+		$nofollow = qa_opt('useo_access_nofollow');
+		if($noindex and $nofollow)
+			$this->output('<meta name="robots" content="noindex, nofollow" />');
+		elseif($noindex)
+			$this->output('<meta name="robots" content="noindex" />');
+		else{
+			// if page is not already noindex, check if it needs to be noindex. also add nofollow if necessary
+			$status = 1; // content is long enough
+			if( ($this->template=='question') and (qa_opt('useo_access_length_enable')) and ( (int)qa_opt('useo_access_length')>0 ) ){
+				$status = 0;
+				$minimum_words = (int)qa_opt('useo_access_length');
+				$word_count = str_word_count($this->content['q_view']['raw']['title']) + str_word_count($this->content['q_view']['raw']['content']);
+				if($word_count >= $minimum_words)
+					$status = 1;
+				else{
+					foreach($this->content['q_view']['c_list']['cs'] as $comment)
+						$word_count += str_word_count($comment['raw']['content']);
+					if($word_count >= $minimum_words)
+						$status = 1;
+					else{
+						foreach($this->content['a_list']['as'] as $answer)
+							$word_count += str_word_count($answer['raw']['content']);
+						if($word_count >= $minimum_words)
+							$status = 1;
+						else{
+							foreach($this->content['a_list']['as'] as $answer)
+								foreach($answer['c_list']['cs'] as $comment)
+									$word_count += str_word_count($comment['raw']['content']);
+							if($word_count >= $minimum_words)
+								$status = 1;
+						}
+					}
+				}
+			}
+			if( ($nofollow) && ($status==1) )
+				$this->output('<meta name="robots" content="nofollow" />');
+			elseif( ($nofollow) && ($status==0) )
+				$this->output('<meta name="robots" content="noindex, nofollow" />');
+			elseif($status==0)
+				$this->output('<meta name="robots" content="noindex" />');
+		}
+		
 	}
 
 }

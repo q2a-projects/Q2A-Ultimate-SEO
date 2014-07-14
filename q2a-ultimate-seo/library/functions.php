@@ -62,4 +62,10 @@ function useo_reset_settings(){
 	qa_opt('useo_sitemap_categoriy_q_enable', 0);
 	qa_opt('useo_sitemap_categoriy_q_count', 10000);
 
+	// Accessibility options
+	qa_opt('useo_access_noindex', 0);
+	qa_opt('useo_access_nofollow', 0);
+	qa_opt('useo_access_length_enable', 0);
+	qa_opt('useo_access_length', 300);
+
 }

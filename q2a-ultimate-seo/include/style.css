@@ -349,3 +349,7 @@ h2 {
 .useo-text , .useo-list{
     width: 50%;
 }
+.useo-option-suffix{
+   	display: inline-block;
+    margin: 0 5px 0 0;
+}

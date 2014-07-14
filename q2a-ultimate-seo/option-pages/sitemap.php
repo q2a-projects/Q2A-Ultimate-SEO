@@ -2,7 +2,7 @@
 	$siteurl=qa_opt('site_url');
 ?>
 <h2 class="heading">XML Sitemaps</h2>
-<div class="useo-option-header-content">It's recommended that you enable this module to divide your sime into smaller files which are prefered to a single large site map file by search engines.</div>
+<div class="useo-option-header-content">It's recommended that you enable this module to divide your site-map into smaller files which are preferred to a single large site map file by search engines.</div>
 <div class="useo-option-container">
 	<div class="useo-option-detail">
 		Enable Ultimate SEO Sitemap
@@ -20,10 +20,10 @@
 	<div class="useo-option-content">
 		<div class="useo-text-container">
 			<input value="<?php echo (int)qa_opt('useo_sitemap_question_count'); ?>" type="text" id="" class="useo-text" name="useo_sitemap_question_count">
+			<div class="useo-option-suffix"> Links per page </div>
 		</div>
-		  <div class="useo-option-header-content">It's recommended that you keep maximum number of links in each sitemap between 1000 to 40000 links.</div>
-		  <div class="useo-option-header-content">Also make sure that size of your XML sitemap is less than 10MB.</div>
-
+		<div class="useo-option-header-content">It's recommended that you keep maximum number of links in each sitemap between 1000 to 40000 links.</div>
+		<div class="useo-option-header-content">Also make sure that size of your XML sitemap is less than 10MB.</div>
 	</div>
 </div>
 <hr>
@@ -44,6 +44,7 @@
 	<div class="useo-option-content">
 		<div class="useo-text-container">
 			<input value="<?php echo (int)qa_opt('useo_sitemap_users_count'); ?>" type="text" id="" class="useo-text" name="useo_sitemap_users_count">
+			<div class="useo-option-suffix"> Links per page </div>
 		</div>
 	</div>
 </div>
@@ -65,6 +66,7 @@
 	<div class="useo-option-content">
 		<div class="useo-text-container">
 			<input value="<?php echo (int)qa_opt('useo_sitemap_tags_count'); ?>" type="text" id="" class="useo-text" name="useo_sitemap_tags_count">
+			<div class="useo-option-suffix"> Links per page </div>
 		</div>
 	</div>
 </div>
@@ -100,6 +102,7 @@
 	<div class="useo-option-content">
 		<div class="useo-text-container">
 			<input value="<?php echo (int)qa_opt('useo_sitemap_categoriy_q_count'); ?>" type="text" id="" class="useo-text" name="useo_sitemap_categoriy_q_count">
+			<div class="useo-option-suffix"> Links per page </div>
 		</div>
 	</div>
 </div>

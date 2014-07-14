@@ -110,6 +110,11 @@ class useo_options {
 				qa_opt('useo_sitemap_categories_enable', (int)qa_post_text('useo_sitemap_categories_enable'));
 				qa_opt('useo_sitemap_categoriy_q_enable', (int)qa_post_text('useo_sitemap_categoriy_q_enable'));
 				qa_opt('useo_sitemap_categoriy_q_count', (int)qa_post_text('useo_sitemap_categoriy_q_count'));
+				// XML sitemap section
+				qa_opt('useo_access_noindex', (int)qa_post_text('useo_access_noindex'));
+				qa_opt('useo_access_nofollow', (int)qa_post_text('useo_access_nofollow'));
+				qa_opt('useo_access_length_enable', (int)qa_post_text('useo_access_length_enable'));
+				qa_opt('useo_access_length', (int)qa_post_text('useo_access_length'));
 
 
 				// ~~~
