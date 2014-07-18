@@ -110,12 +110,16 @@ class useo_options {
 				qa_opt('useo_sitemap_categories_enable', (int)qa_post_text('useo_sitemap_categories_enable'));
 				qa_opt('useo_sitemap_categoriy_q_enable', (int)qa_post_text('useo_sitemap_categoriy_q_enable'));
 				qa_opt('useo_sitemap_categoriy_q_count', (int)qa_post_text('useo_sitemap_categoriy_q_count'));
-				// XML sitemap section
+				// Accessibility section
 				qa_opt('useo_access_noindex', (int)qa_post_text('useo_access_noindex'));
 				qa_opt('useo_access_nofollow', (int)qa_post_text('useo_access_nofollow'));
 				qa_opt('useo_access_length_enable', (int)qa_post_text('useo_access_length_enable'));
 				qa_opt('useo_access_length', (int)qa_post_text('useo_access_length'));
-
+				// Meta Tags
+				qa_opt('useo_meta_desc_ans_enable', (int)qa_post_text('useo_meta_desc_ans_enable'));
+				qa_opt('useo_meta_desc_sel_ans_enable', (int)qa_post_text('useo_meta_desc_sel_ans_enable'));
+				qa_opt('useo_meta_desc_length', (int)qa_post_text('useo_meta_desc_length'));
+				qa_opt('useo_meta_editor_enable', (int)qa_post_text('useo_meta_editor_enable'));
 
 				// ~~~
 				$output .= '<div class="qa-form-tall-ok">Settings were saved.</div>';

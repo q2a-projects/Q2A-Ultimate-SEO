@@ -1,6 +1,9 @@
 <?php
 
 class qa_html_theme_layer extends qa_html_theme_base {
+	var $meta_title;
+	var $meta_description;
+	var $meta_keywords;
 	
 	function doctype(){			
 		qa_html_theme_base::doctype();
@@ -28,9 +31,31 @@ class qa_html_theme_layer extends qa_html_theme_base {
 		}
 		
 	}
+	function head_script()
+	{
+		qa_html_theme_base::head_script();
+		if ( ($this->template=='question') and (qa_get_logged_in_level() >= QA_USER_LEVEL_ADMIN) ){
+			$variables = '';
+			$variables .= 'useo_ajax_url = "' . USEO_URL . '/ajax.php";';
+			$variables .= 'useo_postid = ' . $this->content['q_view']['raw']['postid'] .';';
+			$this->output('<script>' . $variables . '</script>');
+			$this->output('<script src="'.USEO_URL.'/include/seo-forms.js" type="text/javascript"></script>');
+		}
+	}	
+
 	function head_title()
 	{
-		// Title Customization Options
+	// Custom Meta(title,description,keywords)
+		if( ($this->template=='question') and (qa_opt('useo_meta_editor_enable')) ){
+			require_once QA_INCLUDE_DIR.'qa-db-metas.php';
+			$postid = $this->content['q_view']['raw']['postid'];
+			$metas = json_decode(qa_db_postmeta_get($postid, 'useo-meta-info'),true);
+			$this->meta_title = @$metas['title'];
+			$this->meta_description = @$metas['description'];
+			$this->meta_keywords = @$metas['keywords'];
+		}
+	
+	// Title Customization Options
 		$title = '';
 		switch ($this->template) {
 			case 'qa':
@@ -42,11 +67,17 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				}
 				break;
 			case 'question':
-				$title_template = qa_opt('useo_title_qa_item');
-				if(! empty($title_template) ){
-					$search = array( '%site-title%', '%question-title%', '%question-category%');
-					$replace   = array(qa_opt('site_title'), @$this->content['q_view']['raw']['title'], @$this->content['q_view']['raw']['categoryname']);
-					$title = str_replace($search, $replace, $title_template);
+				if(empty($this->meta_title)){
+					// title customization
+					$title_template = qa_opt('useo_title_qa_item');
+					if(! empty($title_template) ){
+						$search = array( '%site-title%', '%question-title%', '%question-category%');
+						$replace   = array(qa_opt('site_title'), @$this->content['q_view']['raw']['title'], @$this->content['q_view']['raw']['categoryname']);
+						$title = str_replace($search, $replace, $title_template);
+					}
+				}else{
+					// meta editor
+					$title = $this->meta_title;
 				}
 				break;
 			case 'questions':
@@ -195,8 +226,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 		else
 			$this->output('<title>'.$title.'</title>');
 		
-		
-		// Page Meta Tags
+	// Page Meta Tags
 		$noindex = qa_opt('useo_access_noindex');
 		$nofollow = qa_opt('useo_access_nofollow');
 		if($noindex and $nofollow)
@@ -238,6 +268,106 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				$this->output('<meta name="robots" content="noindex, nofollow" />');
 			elseif($status==0)
 				$this->output('<meta name="robots" content="noindex" />');
+		}
+	// Question Meta tags
+		if($this->template=='question'){
+			// setup custom meta keyword
+			if (! empty($this->meta_keywords))
+				$this->content['keywords'] = $this->meta_keywords;
+			// setup custom meta description
+			if (! empty($this->meta_description))
+				$this->content['description'] = $this->meta_description;
+			// if there was no custom meta description and it's supposed to read it from answers do it, otherwise don't change it
+			elseif(qa_opt('useo_meta_desc_ans_enable')){
+				$lenght = (int)qa_opt('useo_meta_desc_length');
+				if($lenght<=0)
+					$lenght = 160;
+				$text = '';
+				if( ($this->content['q_view']['raw']['acount'] > 0) and (qa_opt('useo_meta_desc_ans_enable')) ){
+					// get Selected Answer's content
+					if( (isset($this->content["q_view"]["raw"]["selchildid"])) and (qa_opt('useo_meta_desc_sel_ans_enable')) ){
+						foreach($this->content['a_list']['as'] as $answer)
+							if($answer['raw']['isselected'])
+								$text = $answer['raw']['content'];
+					}else{
+					// get most voted Answer's content
+						$max_vote = 0; // don't use answers with negative votes.
+						foreach($this->content['a_list']['as'] as $answer){
+							if($answer['raw']['netvotes'] > $max_vote){
+								$text = $answer['raw']['content'];
+								$max_vote = $answer['raw']['netvotes'];
+							}
+						}
+					}
+				}
+				if(!(empty($text))){
+					$excerpt = useo_get_excerpt($text, 0, $lenght);
+					$this->content['description'] = $excerpt;
+				}
+			}
+		}
+	}
+	function main_parts($content)
+	{
+		qa_html_theme_base::main_parts($content);
+
+		if( (qa_get_logged_in_level() >= QA_USER_LEVEL_ADMIN) and ($this->template=='question') and (qa_opt('useo_meta_editor_enable')) ){
+			
+			$this->output('<div class="qa-widgets-main qa-widgets-main-low"><hr />');
+			$this->output('<form name="useo-meta-editor" action="'.qa_self_html().'" method="post">');
+			$this->output('
+			<h2> Page Title And Meta Tags </h2>
+			<strong>Only administrators can see this section.</strong>
+			<table class="qa-form-tall-table">
+				<tbody id="useo-title">
+					<tr>
+						<td class="qa-form-tall-label">
+							Page Title
+						</td>
+					</tr>
+					<tr>
+						<td class="qa-form-tall-data">
+							<input placeholder="' . $this->content['q_view']['raw']['title'] . '" id="useo-meta-editor-title" class="qa-form-tall-text" type="text" value="'. $this->meta_title .'" name="useo-meta-editor-title">
+						</td>
+					</tr>
+				</tbody>
+
+				<tbody id="useo-meta-description">
+					<tr>
+						<td class="qa-form-tall-label">
+							Description Meta Tag
+						</td>
+					</tr>
+					<tr>
+						<td class="qa-form-tall-data">
+							<textarea placeholder="' . $this->content['description'] . '" id="useo-meta-editor-description" class="qa-form-tall-text" cols="40" rows="3" name="useo-meta-editor-description">'. $this->meta_description .'</textarea>
+						</td>
+					</tr>
+				</tbody>
+				<tbody id="useo-meta-keywords">
+					<tr>
+						<td class="qa-form-tall-label">
+							Keywords Meta Tag
+						</td>
+					</tr>
+					<tr>
+						<td class="qa-form-tall-data">
+							<input placeholder="' . $this->content['keywords'] . '" id="useo-meta-editor-keywords" class="qa-form-tall-text" type="text" value="'. $this->meta_keywords .'" name="useo-meta-editor-keywords">
+							<div class="qa-form-tall-note">A comma separated list of your most important keywords</div>
+						</td>
+					</tr>
+				</tbody>
+				<tbody>
+					<tr>
+						<td  id="useo_buttons_container" class="qa-form-tall-buttons" colspan="1">
+							<input id="useo_save_meta" class="qa-form-tall-button qa-form-tall-button-save" type="submit" title="" value="Save Options">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			');
+			$this->output('</form>');
+			$this->output('<hr /></div>');
 		}
 		
 	}
