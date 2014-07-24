@@ -68,4 +68,36 @@ function useo_reset_settings(){
 	qa_opt('useo_access_length_enable', 0);
 	qa_opt('useo_access_length', 300);
 
+
+	// Meta Tags
+	qa_opt('useo_meta_desc_ans_enable', 1);
+	qa_opt('useo_meta_desc_sel_ans_enable', 1);
+	qa_opt('useo_meta_desc_length', 160);
+	qa_opt('useo_meta_editor_enable', 0);
+
+	// Social Tags
+	qa_opt('useo_social_og_enable_auto', 1);
+	qa_opt('useo_social_og_desc_length', 140);
+	qa_opt('useo_social_og_image', '');
+	qa_opt('useo_social_tc_enable', 1);
+	qa_opt('useo_social_tc_desc_length', 120);
+	qa_opt('useo_social_tc_image', '');
+	qa_opt('useo_social_tc_handler', '');
+	qa_opt('useo_social_schema_enable', 1);
+	qa_opt('useo_social_schema_page_type', 1);
+	qa_opt('useo_social_gp_thumbnail', '');
+	qa_opt('useo_social_enable_editor', 0);
+
+}
+
+function useo_get_excerpt($str, $startPos=0, $maxLength=160) {
+	if(strlen($str) > $maxLength) {
+		$excerpt   = substr($str, $startPos, $maxLength-3);
+		$lastSpace = strrpos($excerpt, ' ');
+		$excerpt   = substr($excerpt, 0, $lastSpace);
+		$excerpt  .= '...';
+	} else {
+		$excerpt = $str;
+	}
+	return $excerpt;
 }

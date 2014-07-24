@@ -120,6 +120,18 @@ class useo_options {
 				qa_opt('useo_meta_desc_sel_ans_enable', (int)qa_post_text('useo_meta_desc_sel_ans_enable'));
 				qa_opt('useo_meta_desc_length', (int)qa_post_text('useo_meta_desc_length'));
 				qa_opt('useo_meta_editor_enable', (int)qa_post_text('useo_meta_editor_enable'));
+				// Social Tags
+				qa_opt('useo_social_og_enable_auto', (int)qa_post_text('useo_social_og_enable_auto'));
+				qa_opt('useo_social_og_desc_length', qa_post_text('useo_social_og_desc_length'));
+				qa_opt('useo_social_og_image', qa_post_text('useo_social_og_image'));
+				qa_opt('useo_social_tc_enable', (int)qa_post_text('useo_social_tc_enable'));
+				qa_opt('useo_social_tc_desc_length', qa_post_text('useo_social_tc_desc_length'));
+				qa_opt('useo_social_tc_image', qa_post_text('useo_social_tc_image'));
+				qa_opt('useo_social_tc_handler', qa_post_text('useo_social_tc_handler'));
+				qa_opt('useo_social_schema_enable', (int)qa_post_text('useo_social_schema_enable'));
+				qa_opt('useo_social_schema_page_type', (int)qa_post_text('useo_social_schema_page_type'));
+				qa_opt('useo_social_gp_thumbnail', qa_post_text('useo_social_gp_thumbnail'));
+				qa_opt('useo_social_enable_editor', qa_post_text('useo_social_enable_editor'));
 
 				// ~~~
 				$output .= '<div class="qa-form-tall-ok">Settings were saved.</div>';

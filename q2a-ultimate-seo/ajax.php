@@ -28,6 +28,12 @@
 		else
 			qa_db_postmeta_set($postid, 'useo-meta-info', $data);
 	}
+	elseif($action=='social-save'){
+		if($data=='{}' or $data=='')
+			qa_db_postmeta_clear($postid, 'useo-social-info');
+		else
+			qa_db_postmeta_set($postid, 'useo-social-info', $data);
+	}
 /*
 	Omit PHP closing tag to help avoid accidental output
 */

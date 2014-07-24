@@ -4,12 +4,121 @@ class qa_html_theme_layer extends qa_html_theme_base {
 	var $meta_title;
 	var $meta_description;
 	var $meta_keywords;
+	var $metas = array();
+	var $social_metas = array();
 	
 	function doctype(){			
 		qa_html_theme_base::doctype();
-		//v($this->content);
-
+		require_once QA_INCLUDE_DIR.'qa-db-metas.php';
+		// Custom Meta(title,description,keywords)
+		if( ($this->template=='question') and (qa_opt('useo_meta_editor_enable')) ){
+			$metas = json_decode(qa_db_postmeta_get($this->content['q_view']['raw']['postid'], 'useo-meta-info'),true);
+			$this->meta_title = @$metas['title'];
+			$this->meta_description = @$metas['description'];
+			$this->meta_keywords = @$metas['keywords'];
+		}
+		// Generate Social Meta Tags
+		$page_url = @$this->content['canonical'];
+		if(! empty($this->meta_description))
+			$description = $this->meta_description;
+		else
+			$description = @$this->content['description'];
+		if(! empty($this->meta_title))
+			$title = $this->meta_title;
+		else
+			$title = @$this->content['q_view']['raw']['title'];
 		
+		if($this->template=='question'){
+			if(qa_opt('useo_social_enable_editor')){
+				$this->social_metas = json_decode(qa_db_postmeta_get($this->content['q_view']['raw']['postid'], 'useo-social-info'),true);
+				if(count($this->social_metas))
+					foreach ($this->social_metas as $index => $variable){
+						$this->metas[$index]['content'] = $variable;
+						$this->metas[$index]['type'] = '';
+					}
+			}
+			if(qa_opt('useo_social_og_enable_auto')){ // Open Graph
+				// site name
+				$this->metas['og-sitename']['content'] = @$this->content['site_title'];
+				$this->metas['og-sitename']['type'] = 'property="og:site_name"';
+				// title
+				$this->metas['og-title']['content'] = $title;
+				$this->metas['og-title']['type'] = 'property="og:title"';
+				// description
+				$gl_length = qa_opt('useo_social_og_desc_length');
+				if($gl_length<=0)
+						$gl_length = 140;
+				$this->metas['og-description']['content'] = useo_get_excerpt($description, 0, $gl_length);
+				$this->metas['og-description']['type'] = 'property="og:description"';
+				// Type
+				$this->metas['og-type']['content'] = 'website';
+				$this->metas['og-type']['type'] = 'property="og:type"';
+				// url
+				if(! empty($page_url)){
+					$this->metas['og-url']['content'] = $page_url;
+					$this->metas['og-url']['type'] = 'property="og:url"';
+				}
+				// image
+				$og_image = qa_opt('useo_social_og_image');
+				if(! empty($og_image)){
+					$this->metas['og-image']['content'] = $og_image;
+					$this->metas['og-image']['type'] = 'property="og:image"';
+				}
+			}
+			if(qa_opt('useo_social_tc_enable')){ // Twitter Cards
+				// type
+				$this->metas['tc-type']['content'] = 'summary';
+				$this->metas['tc-type']['type'] = 'property="twitter:card"';
+				// title
+				$this->metas['tc-title']['content'] = $title;
+				$this->metas['tc-title']['type'] = 'property="twitter:title"';
+				// description
+				$useo_social_tc_desc_length = qa_opt('useo_social_og_desc_length');
+				if($useo_social_tc_desc_length<=0)
+						$useo_social_tc_desc_length = 120;
+				$this->metas['tc-description']['content'] = useo_get_excerpt($description, 0, $useo_social_tc_desc_length);
+				$this->metas['tc-description']['type'] = 'property="twitter:description"';
+				// image
+				$tc_image = qa_opt('useo_social_tc_image');
+				if(! empty($tc_image)){
+					$this->metas['tc-image']['content'] = $tc_image;
+					$this->metas['tc-image']['type'] = 'property="twitter:image"';
+				}
+				// handler
+				// twitter handler goes into "site" field of meta tag
+				$tc_handler = qa_opt('useo_social_tc_handler');
+				if(! empty($tc_handler)){
+					$this->metas['tc-handler']['content'] = $tc_handler;
+					$this->metas['tc-handler']['type'] = 'property="twitter:site"';
+				}
+			}
+			if(qa_opt('useo_social_schema_enable')){ // Twitter Cards
+				// title
+				$this->metas['gp-title']['content'] = $title;
+				$this->metas['gp-title']['type'] = 'itemprop="name"';
+				// description
+				$this->metas['gp-title']['content'] = $description;
+				$this->metas['gp-title']['type'] = 'itemprop="description"';
+				// type
+				$gp_type = qa_opt('useo_social_schema_page_type');
+				if($gp_type==2)
+					$gp_page_type = 'Question';
+				elseif($gp_type==3)
+					$gp_page_type = 'Article';
+				if( isset($gp_page_type) ){ 
+					$this->metas['gp-title']['content'] = '';
+					$this->metas['gp-title']['type'] = 'itemscope itemtype="http://schema.org/' . $gp_page_type . '"';
+				}
+				// description
+				$gp_image = qa_opt('useo_social_gp_thumbnail');
+				if(! empty($gp_image)){
+					$this->metas['gp-image']['content'] = $gp_image;
+					$this->metas['gp-image']['type'] = 'itemprop="image"';
+				}
+			}
+		}
+		
+		// Administrator panel navigation item
 		if ($this->request == 'admin/ulitmate_seo') {
 			if(empty($this->content['navigation']['sub']))
 				$this->content['navigation']['sub']=array();
@@ -29,7 +138,6 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				$this->content['navigation']['sub']['ulitmate_seo']['selected'] = true;
 			}
 		}
-		
 	}
 	function head_script()
 	{
@@ -45,16 +153,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
 	function head_title()
 	{
-	// Custom Meta(title,description,keywords)
-		if( ($this->template=='question') and (qa_opt('useo_meta_editor_enable')) ){
-			require_once QA_INCLUDE_DIR.'qa-db-metas.php';
-			$postid = $this->content['q_view']['raw']['postid'];
-			$metas = json_decode(qa_db_postmeta_get($postid, 'useo-meta-info'),true);
-			$this->meta_title = @$metas['title'];
-			$this->meta_description = @$metas['description'];
-			$this->meta_keywords = @$metas['keywords'];
-		}
-	
+
 	// Title Customization Options
 		$title = '';
 		switch ($this->template) {
@@ -67,12 +166,16 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				}
 				break;
 			case 'question':
+				$category_name = '';
+				if ( (isset($this->content["categoryids"])) && (!(empty($this->content["categoryids"]))))
+						$category_name = $this->content["q_view"]["raw"]["categoryname"];
+
 				if(empty($this->meta_title)){
 					// title customization
 					$title_template = qa_opt('useo_title_qa_item');
 					if(! empty($title_template) ){
-						$search = array( '%site-title%', '%question-title%', '%question-category%');
-						$replace   = array(qa_opt('site_title'), @$this->content['q_view']['raw']['title'], @$this->content['q_view']['raw']['categoryname']);
+						$search = array( '%site-title%', '%question-title%', '%category-name%');
+						$replace   = array(qa_opt('site_title'), @$this->content['q_view']['raw']['title'], $category_name);
 						$title = str_replace($search, $replace, $title_template);
 					}
 				}else{
@@ -81,12 +184,15 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				}
 				break;
 			case 'questions':
+				$category_name = '';
+				if( count(explode('/',$this->request)) > 1 )
+					$category_name = $this->content["q_list"]["qs"][0]["raw"]["categoryname"];
 				$sort = qa_get('sort');
 				if(empty($sort)){
 					$title_template = qa_opt('useo_title_recent');
 					if(! empty($title_template) ){
-						$search = array( '%site-title%', '%recent-qs-title%');
-						$replace   = array(qa_opt('site_title'), qa_lang_html('main/recent_qs_title'));
+						$search = array( '%site-title%', '%recent-qs-title%', '%category-name%');
+						$replace   = array(qa_opt('site_title'), qa_lang_html('main/recent_qs_title'), $category_name);
 						$title = str_replace($search, $replace, $title_template);
 					}
 				}elseif($sort=='hot'){
@@ -120,11 +226,15 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				}
 			case 'unanswered':
 				$sort = qa_get('by');
+				$category_name = '';
+				if( count(explode('/',$this->request)) > 1 )
+					$category_name = $this->content["q_list"]["qs"][0]["raw"]["categoryname"];
+
 				if(empty($sort)){
 					$title_template = qa_opt('useo_title_unanswered');
 					if(! empty($title_template) ){
-						$search = array( '%site-title%', '%unanswered-qs-title%');
-						$replace   = array(qa_opt('site_title'), qa_lang_html('main/unanswered_qs_title'));
+						$search = array( '%site-title%', '%unanswered-qs-title%', '%category-name%');
+						$replace   = array(qa_opt('site_title'), qa_lang_html('main/unanswered_qs_title'), $category_name);
 						$title = str_replace($search, $replace, $title_template);
 					}
 				}elseif($sort=='selected'){
@@ -146,8 +256,12 @@ class qa_html_theme_layer extends qa_html_theme_base {
 			case 'activity':
 				$title_template = qa_opt('useo_title_activity');
 				if(! empty($title_template) ){
-					$search = array( '%site-title%', '%recent-activity-title%');
-					$replace   = array(qa_opt('site_title'), qa_lang_html('main/recent_activity_title'));
+					$category_name = '';
+					if( count(explode('/',$this->request)) > 1 )
+						$category_name = $this->content["q_list"]["qs"][0]["raw"]["categoryname"];
+
+					$search = array( '%site-title%', '%recent-activity-title%', '%category-name%');
+					$replace   = array(qa_opt('site_title'), qa_lang_html('main/recent_activity_title'), $category_name);
 					$title = str_replace($search, $replace, $title_template);
 				}
 				break;
@@ -216,11 +330,6 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
 		}
 
-		$req = explode('/',$this->request);
-		//for category item
-		if( ( (isset($this->content["categoryids"])) && (!(empty($this->content["categoryids"]))) ) || ( (count($req)>1) && ( ($this->request=='activity') || ($this->request=='questions') || ($this->request=='unanswered') ) ) )
-			echo("it's a category");
-		
 		if(empty($title))
 			qa_html_theme_base::head_title();
 		else
@@ -305,6 +414,20 @@ class qa_html_theme_layer extends qa_html_theme_base {
 					$this->content['description'] = $excerpt;
 				}
 			}
+			// Meta Tags and social meta tags
+			if($this->template=='question'){
+				if(qa_opt('useo_social_enable_editor')){
+					foreach($this->metas as $key => $value)
+						if( isset($this->social_metas[$key]) )
+							$this->output('<meta ' . $value['type'] . ' content="' . $this->social_metas[$key] . '" />' );
+						else
+							$this->output('<meta ' . $value['type'] . ( $value['content'] ? ' content="' . $value['content'] . '"' : '') . ' /> ' );
+				
+				}elseif(qa_opt('useo_social_og_enable_auto')){
+					foreach($this->metas as $key => $value)
+						$this->output('<meta ' . $value['type'] . ( $value['content'] ? ' content="' . $value['content'] . '"' : '') . ' /> ' );
+				}
+			}
 		}
 	}
 	function main_parts($content)
@@ -313,13 +436,13 @@ class qa_html_theme_layer extends qa_html_theme_base {
 
 		if( (qa_get_logged_in_level() >= QA_USER_LEVEL_ADMIN) and ($this->template=='question') and (qa_opt('useo_meta_editor_enable')) ){
 			
-			$this->output('<div class="qa-widgets-main qa-widgets-main-low"><hr />');
+			$this->output('<div class="qa-widgets-main qa-widgets-main-low">');
 			$this->output('<form name="useo-meta-editor" action="'.qa_self_html().'" method="post">');
 			$this->output('
 			<h2> Page Title And Meta Tags </h2>
 			<strong>Only administrators can see this section.</strong>
 			<table class="qa-form-tall-table">
-				<tbody id="useo-title">
+				<tbody>
 					<tr>
 						<td class="qa-form-tall-label">
 							Page Title
@@ -332,7 +455,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 					</tr>
 				</tbody>
 
-				<tbody id="useo-meta-description">
+				<tbody>
 					<tr>
 						<td class="qa-form-tall-label">
 							Description Meta Tag
@@ -359,11 +482,159 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				</tbody>
 				<tbody>
 					<tr>
-						<td  id="useo_buttons_container" class="qa-form-tall-buttons" colspan="1">
+						<td  id="useo_buttons_container_meta" class="qa-form-tall-buttons" colspan="1">
 							<input id="useo_save_meta" class="qa-form-tall-button qa-form-tall-button-save" type="submit" title="" value="Save Options">
 						</td>
 					</tr>
 				</tbody>
+			</table>
+			');
+			$this->output('</form>');
+			$this->output('<hr /></div>');
+		}
+		if( (qa_get_logged_in_level() >= QA_USER_LEVEL_ADMIN) and ($this->template=='question') and (qa_opt('useo_social_enable_editor')) ){
+			
+			$this->output('<div class="qa-widgets-main qa-widgets-main-low">');
+			$this->output('<form name="useo-meta-editor" action="'.qa_self_html().'" method="post">');
+			$this->output('
+			<h2> Social Tags Editor </h2>
+			<p>Only administrators can see this section.</p>
+			<h3>Open Graph</h3>
+			<table class="qa-form-tall-table">
+				<tbody>
+					<tr>
+						<td class="qa-form-tall-label">
+							Site Title
+						</td>
+					</tr>
+					<tr>
+						<td class="qa-form-tall-data">
+							<input placeholder="' . @$this->metas['og-sitename']['content'] . '" id="useo-og-sitename" class="qa-form-tall-text" type="text" value="'. @$this->social_metas['og-sitename'] .'" name="useo-meta-editor-title">
+						</td>
+					</tr>
+				</tbody>
+				<tbody>
+					<tr>
+						<td class="qa-form-tall-label">
+							Page Title
+						</td>
+					</tr>
+					<tr>
+						<td class="qa-form-tall-data">
+							<input placeholder="' . @$this->metas['og-title']['content'] . '" id="useo-og-title" class="qa-form-tall-text" type="text" value="'. @$this->social_metas['og-title'] .'" name="useo-meta-editor-title">
+						</td>
+					</tr>
+				</tbody>
+				<tbody>
+					<tr>
+						<td class="qa-form-tall-label">
+							Description Meta Tag
+						</td>
+					</tr>
+					<tr>
+						<td class="qa-form-tall-data">
+							<textarea placeholder="' . @$this->metas['og-description']['content'] . '" id="useo-og-description" class="qa-form-tall-text" cols="40" rows="3" name="useo-meta-editor-description">'. @$this->social_metas['og-description'] .'</textarea>
+						</td>
+					</tr>
+				</tbody>
+				<tbody>
+					<tr>
+						<td class="qa-form-tall-label">
+							Shared Page\'s URL
+						</td>
+					</tr>
+					<tr>
+						<td class="qa-form-tall-data">
+							<input placeholder="' . @$this->metas['og-url']['content'] . '" id="useo-og-url" class="qa-form-tall-text" type="text" value="'. @$this->social_metas['og-url'] .'" name="useo-meta-editor-title">
+						</td>
+					</tr>
+				</tbody>
+				<tbody>
+					<tr>
+						<td class="qa-form-tall-label">
+							Thumbnail Image
+						</td>
+					</tr>
+					<tr>
+						<td class="qa-form-tall-data">
+							<input placeholder="' . @$this->metas['og-image']['content'] . '" id="useo-og-image" class="qa-form-tall-text" type="text" value="'. @$this->social_metas['og-image'] .'" name="useo-meta-editor-title">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<h3>Twitter Cards</h3>
+			<table class="qa-form-tall-table">
+				<tbody>
+					<tr>
+						<td class="qa-form-tall-label">
+							Page Title
+						</td>
+					</tr>
+					<tr>
+						<td class="qa-form-tall-data">
+							<input placeholder="' . @$this->metas['tc-title']['content'] . '" id="useo-tc-title" class="qa-form-tall-text" type="text" value="'. @$this->social_metas['tc-title'] .'" name="useo-meta-editor-title">
+						</td>
+					</tr>
+				</tbody>
+				<tbody>
+					<tr>
+						<td class="qa-form-tall-label">
+							Description
+						</td>
+					</tr>
+					<tr>
+						<td class="qa-form-tall-data">
+							<textarea placeholder="' . @$this->metas['tc-description']['content'] . '" id="useo-tc-description" class="qa-form-tall-text" cols="40" rows="3" name="useo-meta-editor-description">'. @$this->social_metas['tc-description'] .'</textarea>
+						</td>
+					</tr>
+				</tbody>
+				<tbody>
+					<tr>
+						<td class="qa-form-tall-label">
+							Thumbnail Image
+						</td>
+					</tr>
+					<tr>
+						<td class="qa-form-tall-data">
+							<input placeholder="' . @$this->metas['tc-image']['content'] . '" id="useo-tc-image" class="qa-form-tall-text" type="text" value="'. @$this->social_metas['tc-image'] .'" name="useo-meta-editor-title">
+						</td>
+					</tr>
+				</tbody>
+				<tbody>
+					<tr>
+						<td class="qa-form-tall-label">
+							Twitter Handler
+						</td>
+					</tr>
+					<tr>
+						<td class="qa-form-tall-data">
+							<input placeholder="' . @$this->metas['tc-handler']['content'] . '" id="useo-tc-handler" class="qa-form-tall-text" type="text" value="'. @$this->social_metas['tc-handler'] .'" name="useo-meta-editor-title">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<h3>Google+ Schemas</h3>
+			<table class="qa-form-tall-table">
+				<tbody>
+					<tr>
+						<td class="qa-form-tall-label">
+							Thumbnail Image
+						</td>
+					</tr>
+					<tr>
+						<td class="qa-form-tall-data">
+							<input placeholder="' . @$this->metas['gp-image']['content'] . '" id="useo-gp-image" class="qa-form-tall-text" type="text" value="'. @$this->social_metas['gp-image'] .'" name="useo-meta-editor-title">
+						</td>
+					</tr>
+				</tbody>
+				<tbody>
+					<tr>
+						<td  id="useo_buttons_container_social" class="qa-form-tall-buttons" colspan="1">
+							<input id="useo_save_social" class="qa-form-tall-button qa-form-tall-button-save" type="submit" title="" value="Save Options">
+						</td>
+					</tr>
+				</tbody>
+
 			</table>
 			');
 			$this->output('</form>');

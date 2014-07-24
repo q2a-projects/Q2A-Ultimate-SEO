@@ -39,8 +39,8 @@ user_x
 		</div>
 	</div>
   <div class="useo-option-extra-detail">
-	available title variables for this page: <strong>%site-title%</strong>, <strong>%question-title%</strong>, <strong>%question-category%</strong>
-	<div class="useo-option-recommended"> Recommended Title while using categories: <strong>%question-category%: %question-title%</strong></div>
+	available title variables for this page: <strong>%site-title%</strong>, <strong>%question-title%</strong>, <strong>%category-name%</strong>
+	<div class="useo-option-recommended"> Recommended Title while using categories: <strong>%category-name%: %question-title%</strong></div>
   </div>
 </div>
 <hr>
@@ -52,7 +52,7 @@ user_x
 		</div>
 	</div>
   <div class="useo-option-extra-detail">
-	available title variables for this page: <strong>%site-title%</strong>, <strong>%recent-qs-title%</strong>
+	available title variables for this page: <strong>%site-title%</strong>, <strong>%recent-qs-title%</strong>, <strong>%category-name%</strong>
   </div>
 </div>
 <hr>
@@ -112,7 +112,7 @@ user_x
 		</div>
 	</div>
   <div class="useo-option-extra-detail">
-	available title variables for this page: <strong>%site-title%</strong>, <strong>%unanswered-qs-title%</strong>
+	available title variables for this page: <strong>%site-title%</strong>, <strong>%unanswered-qs-title%</strong>, <strong>%category-name%</strong>
   </div>
 </div>
 <hr>
