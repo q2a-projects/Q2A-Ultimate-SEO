@@ -3,9 +3,9 @@
 /*              
     Plugin Name: Q2A Ultimate SEO
     Plugin URI: https://github.com/Towhidn/Q2A-Ultimate-SEO/
-    Plugin Update Check URI:  https://github.com/Towhidn/Q2A-SEO-Links/blob/master/q2a-seo-links/qa-plugin.php
+    Plugin Update Check URI:  https://github.com/Towhidn/Q2A-Ultimate-SEO/raw/master/q2a-ultimate-seo/qa-plugin.php
     Plugin Description: SEO Links for Question2Answer
-    Plugin Version: 1.2
+    Plugin Version: 1.3
     Plugin Date: 2014-24-1
     Plugin Author: QA-Themes.com
     Plugin Author URI: http://QA-Themes.com
@@ -21,19 +21,23 @@
 	define('USEO_URL', useo_get_base_url().'/qa-plugin/q2a-ultimate-seo');
 	define('USEO_VERSION', 1);
 
-	require_once USEO_DIR. '/library/functions.php';
 	require_once QA_INCLUDE_DIR.'qa-util-string.php';
-
+	require_once USEO_DIR. '/library/functions.php';
+	
     qa_register_plugin_module('page', 'options.php', 'useo_options', 'Ultimate SEO Options');
 	
 	qa_register_plugin_layer('layer.php', 'Ultimate SEO Layer');
 
-	
 	qa_register_plugin_overrides('overrides.php');
 
-	qa_register_plugin_module('page', '/library/scalable-xml-sitemaps.php', 'scalable_xml_sitemaps', 'Scalable XML Sitemaps');
+	qa_register_plugin_module('page', '/library/scalable-xml-sitemaps.php', 'useo_scalable_xml_sitemaps', 'Ultimate SEO Scalable XML Sitemaps');
 	
+	qa_register_plugin_module('page', 'tag-editor-page.php', 'useo_tag_editor_page', 'Ultimate SEO Tag Description Edit Page');
+
+	qa_register_plugin_module('widget', 'tag-widget.php', 'useo_tag_widget', 'Ultimate SEO Tag Descriptions');
 	
+	qa_register_plugin_phrases('languages/useo-lang-*.php', 'useo');
+
 function useo_get_base_url()
 {
 	/* First we need to get the protocol the website is using */

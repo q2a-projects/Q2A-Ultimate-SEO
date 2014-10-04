@@ -132,7 +132,14 @@ class useo_options {
 				qa_opt('useo_social_schema_page_type', (int)qa_post_text('useo_social_schema_page_type'));
 				qa_opt('useo_social_gp_thumbnail', qa_post_text('useo_social_gp_thumbnail'));
 				qa_opt('useo_social_enable_editor', qa_post_text('useo_social_enable_editor'));
-
+				// Tags
+				qa_opt('useo_tag_desc_max_len', (int)qa_post_text('useo_tag_desc_max_len'));
+				qa_opt('useo_tag_desc_enable_icon', (int)qa_post_text('useo_tag_desc_enable_icon'));
+				qa_opt('useo_tag_desc_icon_height', (int)qa_post_text('useo_tag_desc_icon_height'));
+				qa_opt('useo_tag_desc_icon_width', (int)qa_post_text('useo_tag_desc_icon_width'));
+				qa_opt('useo_tag_desc_format', (int)qa_post_text('useo_tag_desc_format'));
+				qa_opt('useo_tag_desc_permit_edit', (int)qa_post_text('useo_tag_desc_permit_edit'));
+				
 				// ~~~
 				$output .= '<div class="qa-form-tall-ok">Settings were saved.</div>';
 				$this->saved = true;

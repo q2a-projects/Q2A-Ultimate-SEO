@@ -1,5 +1,5 @@
 <?php
-	class scalable_xml_sitemaps {
+	class useo_scalable_xml_sitemaps {
 		
 		var $directory;
 		var $urltoroot;

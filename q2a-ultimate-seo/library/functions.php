@@ -12,6 +12,8 @@ function useo_get_host($Address) {
    return @trim($parseUrl[host] ? $parseUrl[host] : array_shift(explode('/', $parseUrl[path], 2)));
 } 
 function useo_reset_settings(){
+	require_once QA_INCLUDE_DIR.'qa-app-options.php';
+	
 	// Title section
 	qa_opt('useo_title_qa', '');
 	qa_opt('useo_title_qa_item', '');
@@ -87,6 +89,15 @@ function useo_reset_settings(){
 	qa_opt('useo_social_schema_page_type', 1);
 	qa_opt('useo_social_gp_thumbnail', '');
 	qa_opt('useo_social_enable_editor', 0);
+	
+	// Tags
+	qa_opt('useo_tag_desc_max_len', 250);
+	qa_opt('useo_tag_desc_enable_icon', 1);
+	qa_opt('useo_tag_desc_icon_height', 16);
+	qa_opt('useo_tag_desc_icon_width', 16);
+	qa_opt('useo_tag_desc_format', 1);
+	qa_opt('useo_tag_desc_permit_edit', QA_PERMIT_EXPERTS);
+
 
 }
 

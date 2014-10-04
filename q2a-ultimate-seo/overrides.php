@@ -43,6 +43,7 @@ function qa_q_request($questionid, $title)
 
 function qa_tag_html($tag, $microformats=false, $favorited=false)
 {
+// URL Customization
 	$type = qa_opt('useo_url_tag_uppercase_type');
 	if($type==1){ // first word's first letter
 		$taglink = ucfirst($tag);
@@ -50,11 +51,18 @@ function qa_tag_html($tag, $microformats=false, $favorited=false)
 		$taglink = str_replace(' ', '?', ucwords(str_replace('?', ' ',  str_replace(' ', '/', ucwords(str_replace('/', ' ', str_replace(' ', '-', ucwords( str_replace('-', ' ', strtolower($tag)) )) )) ))));
 	else // whole words
 		$taglink = strtoupper($tag);
-
+// Tag Description
+	global $useo_tag_desc_list;
+	require_once QA_INCLUDE_DIR.'qa-util-string.php';
+	
+	$taglc=qa_strtolower($tag);
+	$useo_tag_desc_list[$taglc]=true;
+	
+	
 	return '<a href="'.qa_path_html('tag/'.$taglink).'"'.($microformats ? ' rel="tag"' : '').' class="qa-tag-link'.
 		($favorited ? ' qa-tag-favorited' : '').'">'.qa_html($tag).'</a>';
 }
-	
+
 function qa_sanitize_html($html, $linksnewwindow=false, $storage=false)
 {
 	$safe=qa_sanitize_html_base($html, $linksnewwindow, $storage);
