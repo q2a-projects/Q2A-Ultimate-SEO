@@ -97,8 +97,13 @@ function useo_reset_settings(){
 	qa_opt('useo_tag_desc_icon_width', 16);
 	qa_opt('useo_tag_desc_format', 1);
 	qa_opt('useo_tag_desc_permit_edit', QA_PERMIT_EXPERTS);
-
-
+	
+	// Categories
+	qa_opt('useo_cat_title_qlist_enable', 0);
+	qa_opt('useo_cat_title_nav_enable', 0);
+	qa_opt('useo_cat_desc_max_len', 250);
+	qa_opt('useo_cat_desc_format', 1);
+	qa_opt('useo_cat_desc_permit_edit', QA_PERMIT_ADMINS);
 }
 
 function useo_get_excerpt($str, $startPos=0, $maxLength=160) {

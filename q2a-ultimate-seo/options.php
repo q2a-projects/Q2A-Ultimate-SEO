@@ -139,7 +139,13 @@ class useo_options {
 				qa_opt('useo_tag_desc_icon_width', (int)qa_post_text('useo_tag_desc_icon_width'));
 				qa_opt('useo_tag_desc_format', (int)qa_post_text('useo_tag_desc_format'));
 				qa_opt('useo_tag_desc_permit_edit', (int)qa_post_text('useo_tag_desc_permit_edit'));
-				
+				// Categories
+				qa_opt('useo_cat_title_qlist_enable', (int)qa_post_text('useo_cat_title_qlist_enable'));
+				qa_opt('useo_cat_title_nav_enable', (int)qa_post_text('useo_cat_title_nav_enable'));
+				qa_opt('useo_cat_desc_max_len', (int)qa_post_text('useo_cat_desc_max_len'));
+				qa_opt('useo_cat_desc_format', (int)qa_post_text('useo_cat_desc_format'));
+				qa_opt('useo_cat_desc_permit_edit', (int)qa_post_text('useo_cat_desc_permit_edit'));
+
 				// ~~~
 				$output .= '<div class="qa-form-tall-ok">Settings were saved.</div>';
 				$this->saved = true;

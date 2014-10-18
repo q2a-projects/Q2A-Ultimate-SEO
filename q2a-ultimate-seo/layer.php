@@ -6,8 +6,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 	var $meta_keywords;
 	var $metas = array();
 	var $social_metas = array();
-	
-	function doctype(){			
+	function doctype(){
 		qa_html_theme_base::doctype();
 		require_once QA_INCLUDE_DIR.'qa-db-metas.php';
 		// Custom Meta(title,description,keywords)
@@ -117,7 +116,43 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				}
 			}
 		}
-		
+		// category link titles
+		$useo_cat_desc_map = array();
+		$categoryid_list = array();
+		//prepare category navigation ids
+		if(isset($this->content['navigation']['cat']) && qa_opt('useo_cat_title_nav_enable')){
+			$category_nav = $this->content['navigation']['cat'];
+			unset($category_nav['all']);
+			foreach ($category_nav as $index => $item){
+				$categoryid_list[$item['categoryid']] = $item['categoryid'];
+			}
+		}
+		// prepare question list ids
+		if(isset($this->content["q_list"]["qs"]) && qa_opt('useo_cat_title_qlist_enable')){
+			foreach ($this->content["q_list"]["qs"] as $index => $item){
+				if($item['raw']['categoryid'])
+					$categoryid_list[$item['raw']['categoryid']] = $item['raw']['categoryid'];
+			}
+		}
+		// get all category titles
+		if(count($categoryid_list)){
+			$result=qa_db_query_sub(
+				'SELECT categoryid, content FROM ^categorymetas WHERE categoryid IN ($) AND title=$',
+				$categoryid_list,'useo_cat_title'
+			);
+			$useo_cat_desc_map = qa_db_read_all_assoc($result,'categoryid');
+			foreach ($this->content["q_list"]["qs"] as $index => $item){
+				if(isset($item['raw']['categoryid']) && isset($useo_cat_desc_map[$item['raw']['categoryid']]))
+					$this->content["q_list"]["qs"][$index]['where']['title'] = $useo_cat_desc_map[$item['raw']['categoryid']]['content'];
+			}
+		}
+		// set category title for navigation
+		if(count(@$this->content['navigation']['cat']) && qa_opt('useo_cat_title_nav_enable')){
+			foreach ($this->content['navigation']['cat'] as $index => $item){
+				if(isset($item['categoryid']) && isset($useo_cat_desc_map[$item['categoryid']]))
+					$this->content['navigation']['cat'][$index]["popup"] = $useo_cat_desc_map[$item['categoryid']]['content'];
+			}
+		}
 		// Administrator panel navigation item
 		if ($this->request == 'admin/ulitmate_seo') {
 			if(empty($this->content['navigation']['sub']))
@@ -685,6 +720,18 @@ class qa_html_theme_layer extends qa_html_theme_base {
 		
 		$taghtml= $html->saveHTML(); 
 		qa_html_theme_base::post_tag_item($taghtml, $class);
+	}
+	// category link titles
+	function post_meta_where($post, $class)
+	{
+		//$post['where']['data']
+		if(isset($post['where']['data']) && isset($post['where']['title'])){
+			$max_len = (int)qa_opt('useo_cat_desc_max_len');
+			if($max_len <= 0)
+				$max_len = 250;
+			$post['where']['data'] = str_replace('<a', '<a title="' . substr($post['where']['title'],0,$max_len) . '" ', $post['where']['data']);
+		}
+		qa_html_theme_base::post_meta_where($post, $class);
 	}
 	function ranking($ranking)
 	{
