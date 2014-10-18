@@ -15,6 +15,7 @@ class useo_category_widget {
 	
 	function output_widget($region, $place, $themeobject, $template, $request, $qa_content)
 	{
+		/*
 		$requestparts=qa_request_parts();
 		$requestlower=strtolower(qa_request());
 		$firstlower=strtolower($requestparts[0]);
@@ -34,7 +35,9 @@ class useo_category_widget {
 			$slugs=$requestparts;
 		else
 			$slugs=array();
+		*/
 		
+		$slugs = useo_get_current_category_slug();
 		$countslugs=count($slugs);
 		
 		list($categories, $categoryid)=qa_db_select_with_pending(

@@ -175,6 +175,18 @@ class qa_html_theme_layer extends qa_html_theme_base {
 			}
 		}
 	}
+	// add canonical links to category pages
+	function head_metas()
+	{
+		qa_html_theme_base::head_metas();
+		if(qa_opt('useo_cat_canonical_enable')){
+			$cat_slugs = useo_get_current_category_slug();
+			if($cat_slugs){ // it's a category page
+				$path = qa_path_absolute(implode('/', $cat_slugs));
+				$this->output('<link rel="canonical" href="' . $path . '">');
+			}
+		}
+	}
 	function head_script()
 	{
 		qa_html_theme_base::head_script();

@@ -145,7 +145,7 @@ class useo_options {
 				qa_opt('useo_cat_desc_max_len', (int)qa_post_text('useo_cat_desc_max_len'));
 				qa_opt('useo_cat_desc_format', (int)qa_post_text('useo_cat_desc_format'));
 				qa_opt('useo_cat_desc_permit_edit', (int)qa_post_text('useo_cat_desc_permit_edit'));
-
+				qa_opt('useo_cat_canonical_enable', (int)qa_post_text('useo_cat_canonical_enable'));
 				// ~~~
 				$output .= '<div class="qa-form-tall-ok">Settings were saved.</div>';
 				$this->saved = true;

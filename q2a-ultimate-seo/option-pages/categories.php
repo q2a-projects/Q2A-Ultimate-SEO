@@ -69,4 +69,15 @@
 	</div>
 </div>
 <hr>
-
+<div class="useo-option-container">
+	<div class="useo-option-detail">
+		Add canonical links to category pages to prevent duplicate content
+	</div>
+	<div class="useo-option-content">
+		<div class="useo-checkbox-container">
+		<input name="useo_cat_canonical_enable" id="useo_cat_canonical_enable" <?php echo (qa_opt('useo_cat_canonical_enable') ? ' checked="" ' : ''); ?> type="checkbox" class="useo-checkbox" value="1">
+		<label for="useo_cat_canonical_enable"></label>
+		</div>
+		<div class="useo-option-recommended"> * Recommended </div>
+	</div>
+</div>
