@@ -101,10 +101,11 @@ function qa_html_convert_urls($html, $newwindow=false)
     $rel_types = array(1 => 'Nofollow', 2 => 'External', 3 => 'Nofollow External', 4 => '');
 	$links_list=json_decode(qa_opt('useo_link_relations'));
 	$rel='nofollow';
-	foreach($links_list as $key=>$value)
-		if (useo_get_host($value->url) == $host){
-			$rel=$rel_types[$value->rel];
-		}
+	if(count($links_list))
+		foreach($links_list as $key=>$value)
+			if (useo_get_host($value->url) == $host){
+				$rel=$rel_types[$value->rel];
+			}
 	if( qa_opt('useo_links_internal_dofollow') ){
 		$host = useo_get_host($html);
 		$site_url=parse_url(qa_opt('site_url'));

@@ -141,10 +141,11 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				$categoryid_list,'useo_cat_title'
 			);
 			$useo_cat_desc_map = qa_db_read_all_assoc($result,'categoryid');
-			foreach ($this->content["q_list"]["qs"] as $index => $item){
-				if(isset($item['raw']['categoryid']) && isset($useo_cat_desc_map[$item['raw']['categoryid']]))
-					$this->content["q_list"]["qs"][$index]['where']['title'] = $useo_cat_desc_map[$item['raw']['categoryid']]['content'];
-			}
+			if(isset($this->content["q_list"]["qs"]))
+				foreach ($this->content["q_list"]["qs"] as $index => $item){
+					if(isset($item['raw']['categoryid']) && isset($useo_cat_desc_map[$item['raw']['categoryid']]))
+						$this->content["q_list"]["qs"][$index]['where']['title'] = $useo_cat_desc_map[$item['raw']['categoryid']]['content'];
+				}
 		}
 		// set category title for navigation
 		if(count(@$this->content['navigation']['cat']) && qa_opt('useo_cat_title_nav_enable')){
