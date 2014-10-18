@@ -169,7 +169,6 @@ class useo_options {
 						<li>Social Sharing<span>Social Media Meta Tags</span></li>
 						<li>Tags<span>Optimizing Question Tags</span></li>
 						<li>Categories<span>Optimizing Categories</span></li>
-						<li>Plugin Options<span>Plugin settings and options</span></li>
 						<li>About<span>Ultimate SEO Plugin & Developer</span></li>
 					</ul>
 					<div class="resp-tabs-container">
@@ -200,9 +199,6 @@ class useo_options {
 						<div>                   
 							' . $this->get_page_contents('categories.php') . '
 						</div>                  
-						<div>                   
-							' . $this->get_page_contents('plugin-options.php') . '
-						</div>
 						<div>                   
 							' . $this->get_page_contents('about.php') . '
 						</div>
