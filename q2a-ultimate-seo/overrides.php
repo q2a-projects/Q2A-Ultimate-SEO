@@ -78,7 +78,8 @@ function qa_sanitize_html($html, $linksnewwindow=false, $storage=false)
 		{	
 			$site_url=parse_url($value->url);
 			// add rel attribute according to host address
-			if( (isset($site_url['host'])) && (!(empty($site_url['host']))) && (!(empty($link->getAttribute('href')))) )
+			$link_attribute = $link->getAttribute('href');
+			if( (isset($site_url['host'])) && (!(empty($site_url['host']))) && (!(empty($link_attribute))) )
 				if (strpos( strtolower($link->getAttribute('href')) , strtolower($site_url['host']) ))
 					$link->setAttribute('rel', $rel_types[$value->rel]);
 		}
