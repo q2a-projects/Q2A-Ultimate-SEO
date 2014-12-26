@@ -73,15 +73,16 @@ function qa_sanitize_html($html, $linksnewwindow=false, $storage=false)
 	$dom->loadHTML(mb_convert_encoding($safe, 'HTML-ENTITIES', $encod));
 	$links = $dom->getElementsByTagName('a');
 	// apply rel change to list of links
-	foreach ($links as $link) {
-		foreach($links_list as $key=>$value)
-		{	
-			$site_url=parse_url($value->url);
-			// add rel attribute according to host address
-			$link_attribute = $link->getAttribute('href');
-			if( (isset($site_url['host'])) && (!(empty($site_url['host']))) && (!(empty($link_attribute))) )
-				if (strpos( strtolower($link->getAttribute('href')) , strtolower($site_url['host']) ))
-					$link->setAttribute('rel', $rel_types[$value->rel]);
+	if (is_array($links_list) && !empty($links_list)) {
+		foreach ($links as $link) {
+			foreach($links_list as $key=>$value) {
+				$site_url=parse_url($value->url);
+				// add rel attribute according to host address
+				$link_attribute = $link->getAttribute('href');
+				if( (isset($site_url['host'])) && (!(empty($site_url['host']))) && (!(empty($link_attribute))) )
+					if (strpos( strtolower($link->getAttribute('href')) , strtolower($site_url['host']) ))
+						$link->setAttribute('rel', $rel_types[$value->rel]);
+			}
 		}
 	}
 	if( qa_opt('useo_links_internal_dofollow') )
@@ -102,7 +103,7 @@ function qa_html_convert_urls($html, $newwindow=false)
     $rel_types = array(1 => 'Nofollow', 2 => 'External', 3 => 'Nofollow External', 4 => '');
 	$links_list=json_decode(qa_opt('useo_link_relations'));
 	$rel='nofollow';
-	if(count($links_list))
+	if(is_array($links_list))
 		foreach($links_list as $key=>$value)
 			if (useo_get_host($value->url) == $host){
 				$rel=$rel_types[$value->rel];
