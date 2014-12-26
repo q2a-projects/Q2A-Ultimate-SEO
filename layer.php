@@ -106,7 +106,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 					$gp_page_type = 'Question';
 				elseif($gp_type==3)
 					$gp_page_type = 'Article';
-				if( isset($gp_page_type) ){ 
+				if( isset($gp_page_type) ){
 					$this->metas['gp-title']['content'] = '';
 					$this->metas['gp-title']['type'] = 'itemscope itemtype="http://schema.org/' . $gp_page_type . '"';
 				}
@@ -199,7 +199,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 			$this->output('<script>' . $variables . '</script>');
 			$this->output('<script src="'.USEO_URL.'/include/seo-forms.js" type="text/javascript"></script>');
 		}
-	}	
+	}
 
 	function head_title()
 	{
@@ -384,7 +384,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 			qa_html_theme_base::head_title();
 		else
 			$this->output('<title>'.$title.'</title>');
-		
+
 	// Page Meta Tags
 		$noindex = qa_opt('useo_access_noindex');
 		$nofollow = qa_opt('useo_access_nofollow');
@@ -472,7 +472,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 							$this->output('<meta ' . $value['type'] . ' content="' . $this->social_metas[$key] . '" />' );
 						else
 							$this->output('<meta ' . $value['type'] . ( $value['content'] ? ' content="' . $value['content'] . '"' : '') . ' /> ' );
-				
+
 				}elseif(qa_opt('useo_social_og_enable_auto')){
 					foreach($this->metas as $key => $value)
 						$this->output('<meta ' . $value['type'] . ( $value['content'] ? ' content="' . $value['content'] . '"' : '') . ' /> ' );
@@ -485,7 +485,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 		qa_html_theme_base::main_parts($content);
 
 		if( (qa_get_logged_in_level() >= QA_USER_LEVEL_ADMIN) and ($this->template=='question') and (qa_opt('useo_meta_editor_enable')) ){
-			
+
 			$this->output('<div class="qa-widgets-main qa-widgets-main-low">');
 			$this->output('<form name="useo-meta-editor" action="'.qa_self_html().'" method="post">');
 			$this->output('
@@ -543,7 +543,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 			$this->output('<hr /></div>');
 		}
 		if( (qa_get_logged_in_level() >= QA_USER_LEVEL_ADMIN) and ($this->template=='question') and (qa_opt('useo_social_enable_editor')) ){
-			
+
 			$this->output('<div class="qa-widgets-main qa-widgets-main-low">');
 			$this->output('<form name="useo-meta-editor" action="'.qa_self_html().'" method="post">');
 			$this->output('
@@ -690,7 +690,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 			$this->output('</form>');
 			$this->output('<hr /></div>');
 		}
-		
+
 	}
 	function post_tag_item($taghtml, $class)
 	{
@@ -703,11 +703,11 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				'SELECT tag, title, content FROM ^tagmetas WHERE tag IN ($)',
 				array_keys($useo_tag_desc_list)
 			);
-			
+
 			$useo_tag_desc_map=qa_db_read_all_assoc($result);
 
 			$useo_tag_desc_list=null;
-			
+
 			$plugin_tag_map=array();
 			foreach ($useo_tag_desc_map as &$value) {
 				if ($value['title']=='title') $plugin_tag_map[$value['tag']]['title'] = $value['content'];
@@ -732,8 +732,8 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				 $a->insertBefore($element, $a->firstChild);
 			}
 		}
-		
-		$taghtml= $html->saveHTML(); 
+
+		$taghtml= $html->saveHTML();
 		qa_html_theme_base::post_tag_item($taghtml, $class);
 	}
 	// category link titles
@@ -753,7 +753,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 		if ($this->template=='tags')
 		{
 			global $useo_tag_desc_list; // Already filled in qa-tag-desc-overrides.php  -  All tags used in this page are listed in this array
-			
+
 			if (count(@$useo_tag_desc_list)) {
 				// Get all tag meta in this query
 				$result=qa_db_query_sub(
@@ -785,7 +785,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 							$a->insertBefore($element, $a->firstChild);
 						}
 					}
-					$item['label']= $html->saveHTML(); 				
+					$item['label']= $html->saveHTML();
 				}
 			}
 		}
