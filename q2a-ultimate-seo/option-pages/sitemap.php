@@ -140,11 +140,11 @@
 $q_sitemaps=qa_db_read_one_assoc(qa_db_query_sub(
 	"SELECT count(*) as total from ^posts WHERE type='Q'"
 ));
-$count=qa_opt('useo_sitemap_question_count');
-$q_sitemap_count = ceil($q_sitemaps['total'] / $count);
+$count = (int) qa_opt('useo_sitemap_question_count');
+$q_sitemap_count = $count > 0 ? ceil($q_sitemaps['total'] / $count) : 0;
 for ($i = 0; $i < $q_sitemap_count; $i++){
 	echo '<p><a href="' . $siteurl .  'sitemap-'. $i . '.xml">'. 'sitemap-'. $i . '.xml' . '</a></p>';
-}	
+}
 
 // user's list sitemap
 if( qa_opt('useo_sitemap_users_enable') )
@@ -152,11 +152,11 @@ if( qa_opt('useo_sitemap_users_enable') )
 	$u_sitemaps=qa_db_read_one_assoc(qa_db_query_sub(
 		"SELECT count(*) as total from ^users"
 	));
-	$count=qa_opt('useo_sitemap_users_count');
-	$u_sitemap_count = ceil($u_sitemaps['total'] / $count);
+	$count = (int) qa_opt('useo_sitemap_users_count');
+	$u_sitemap_count = $count > 0 ? ceil($u_sitemaps['total'] / $count) : 0;
 	for ($i = 0; $i < $u_sitemap_count; $i++){
 		echo '<p><a href="' . $siteurl .  'sitemap-users-'. $i . '.xml">'. 'sitemap-users-'. $i . '.xml' . '</a></p>';
-	}				
+	}
 }
 // tag's list sitemap
 if( qa_opt('useo_sitemap_tags_enable') )
@@ -164,11 +164,11 @@ if( qa_opt('useo_sitemap_tags_enable') )
 	$t_sitemaps=qa_db_read_one_assoc(qa_db_query_sub(
 		"SELECT count(*) as total from ^words WHERE tagcount>0 "
 	));
-	$count=qa_opt('useo_sitemap_tags_count');
-	$t_sitemap_count = ceil($t_sitemaps['total'] / $count);
+	$count = (int) qa_opt('useo_sitemap_tags_count');
+	$t_sitemap_count = $count > 0 ? ceil($t_sitemaps['total'] / $count) : 0;
 	for ($i = 0; $i < $t_sitemap_count; $i++){
 		echo '<p><a href="' . $siteurl .  'sitemap-tags-'. $i . '.xml">'. 'sitemap-tags-'. $i . '.xml' . '</a></p>';
-	}				
+	}
 }
 // categories's list sitemap
 if( qa_opt('useo_sitemap_categories_enable') )
@@ -177,22 +177,23 @@ if( qa_opt('useo_sitemap_categories_enable') )
 }
 if( qa_opt('useo_sitemap_categoriy_q_enable') )
 {
-	
+
 	$categories=qa_db_read_all_assoc(qa_db_query_sub(
 				"SELECT categoryid, backpath FROM ^categories WHERE qcount>0 ORDER BY categoryid"
 	));
 	foreach ($categories as $category){
 		$backpath = $category['backpath'];
-		
-		$count=qa_opt('useo_sitemap_categoriy_q_count');
+
 		$qcount=qa_db_read_one_assoc(qa_db_query_sub(
 			'SELECT count(*) as total FROM ^posts WHERE ^posts.type=$
 			AND categoryid=(SELECT categoryid FROM ^categories WHERE ^categories.backpath=$ LIMIT 1)',
 			'Q', $backpath
 		));
-		
+
 		$category_slug = implode('-', array_reverse(explode('/', $category['backpath'])));
-		$cat_count = ceil($qcount['total'] / $count);
+
+		$count = (int) qa_opt('useo_sitemap_categoriy_q_count');
+		$cat_count = $count > 0 ? ceil($qcount['total'] / $count) : 0;
 		for ($i = 0; $i < $cat_count; $i++){
 			echo '<p><a href="' . $siteurl .  'sitemap-category-'. $category_slug . '-' . $i . '.xml">'. 'sitemap-category-' . $category_slug . '-' . $i . '.xml' . '</a></p>';
 		}
