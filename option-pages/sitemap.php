@@ -14,7 +14,7 @@
 		</div>
 	</div>
 </div>
-<h3 class="heading">Sitemap for User Profiles</h3>
+<h3 class="heading">Sitemap for all Questions</h3>
 <div id="useo-criteria-container" class="useo-option-container">
 	<div class="useo-option-detail">Number of Questions per sitemap:</div>
 	<div class="useo-option-content">
