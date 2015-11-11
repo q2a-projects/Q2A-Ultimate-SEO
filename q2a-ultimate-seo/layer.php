@@ -458,7 +458,8 @@ class qa_html_theme_layer extends qa_html_theme_base {
 					}
 				}
 				if(!(empty($text))){
-					$excerpt = useo_get_excerpt($text, 0, $lenght);
+					global $qa_sanitize_html_newwindow;
+					$excerpt = useo_get_excerpt(qa_sanitize_html($text, $qa_sanitize_html_newwindow), 0, $lenght);
 					$this->content['description'] = $excerpt;
 				}
 			}
