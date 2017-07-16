@@ -60,8 +60,8 @@
 				$q_sitemaps=qa_db_read_one_assoc(qa_db_query_sub(
 					"SELECT count(*) as total from ^posts WHERE type='Q'"
 				));
-				$count=qa_opt('useo_sitemap_question_count');
-				$q_sitemap_count = ceil($q_sitemaps['total'] / $count);
+				$count = (int)qa_opt('useo_sitemap_question_count');
+				$q_sitemap_count =  $count > 0 ? ceil($q_sitemaps['total'] / $count) : 0;
 				for ($i = 0; $i < $q_sitemap_count; $i++){
 					$this->sitemap_index_output('sitemap-'. $i . '.xml');
 				}
@@ -90,7 +90,7 @@
 					"SELECT MIN(hotness) AS base, MAX(hotness)-MIN(hotness) AS spread FROM ^posts WHERE type='Q'"
 				));
 				
-				$count=qa_opt('useo_sitemap_question_count');
+				$count = (int)qa_opt('useo_sitemap_question_count');
 				$start=(int)$req[0]*$count;
 
 				$questions=qa_db_read_all_assoc(qa_db_query_sub(
@@ -295,8 +295,8 @@
 			$q_sitemaps=qa_db_read_one_assoc(qa_db_query_sub(
 				"SELECT count(*) as total from ^posts WHERE type='Q'"
 			));
-			$count=qa_opt('useo_sitemap_question_count');
-			$q_sitemap_count = ceil($q_sitemaps['total'] / $count);
+			$count = (int)qa_opt('useo_sitemap_question_count');
+			$q_sitemap_count =  $count > 0 ? ceil($q_sitemaps['total'] / $count) : 0;
 			for ($i = 0; $i < $q_sitemap_count; $i++){
 				$this->sitemap_index_output('sitemap-'. $i . '.xml');
 			}				

@@ -140,8 +140,8 @@
 $q_sitemaps=qa_db_read_one_assoc(qa_db_query_sub(
 	"SELECT count(*) as total from ^posts WHERE type='Q'"
 ));
-$count=qa_opt('useo_sitemap_question_count');
-$q_sitemap_count = ceil($q_sitemaps['total'] / $count);
+$count = (int)qa_opt('useo_sitemap_question_count');
+$q_sitemap_count =  $count > 0 ? ceil($q_sitemaps['total'] / $count) : 0;
 for ($i = 0; $i < $q_sitemap_count; $i++){
 	echo '<p><a href="' . $siteurl .  'sitemap-'. $i . '.xml">'. 'sitemap-'. $i . '.xml' . '</a></p>';
 }	
