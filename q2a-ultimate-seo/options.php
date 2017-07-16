@@ -120,6 +120,9 @@ class useo_options {
 				qa_opt('useo_meta_desc_sel_ans_enable', (int)qa_post_text('useo_meta_desc_sel_ans_enable'));
 				qa_opt('useo_meta_desc_length', (int)qa_post_text('useo_meta_desc_length'));
 				qa_opt('useo_meta_editor_enable', (int)qa_post_text('useo_meta_editor_enable'));
+				qa_opt('useo_meta_home_title', qa_post_text('useo_meta_home_title'));
+				qa_opt('home_description', qa_post_text('home_description')); // native option
+				qa_opt('useo_meta_home_keywords', qa_post_text('useo_meta_home_keywords'));
 				// Social Tags
 				qa_opt('useo_social_og_enable_auto', (int)qa_post_text('useo_social_og_enable_auto'));
 				qa_opt('useo_social_og_desc_length', qa_post_text('useo_social_og_desc_length'));

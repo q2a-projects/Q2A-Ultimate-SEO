@@ -42,5 +42,28 @@
 	<div class="useo-option-extra-detail">Enabling this option will add new fields to question page's sidebar to let you add custom meta descriptions.</div>
 </div>
 <hr>
-
+<div class="useo-option-container">
+	<div class="useo-option-detail">Home page meta title:</div>
+	<div class="useo-option-content">
+		<div class="useo-text-container">
+			<input type="text" value="<?php echo qa_opt('useo_meta_home_title'); ?>" name="useo_meta_home_title" class="useo-text" id="">
+		</div>
+	</div>
+</div>
+<div class="useo-option-container">
+	<div class="useo-option-detail">Home page meta description:</div>
+	<div class="useo-option-content">
+		<div class="useo-text-container">
+			<input type="text" value="<?php echo qa_opt('home_description'); ?>" name="home_description" class="useo-text" id="">
+		</div>
+	</div>
+</div>
+<div class="useo-option-container">
+	<div class="useo-option-detail">Home page meta keywords:</div>
+	<div class="useo-option-content">
+		<div class="useo-text-container">
+			<input type="text" value="<?php echo qa_opt('useo_meta_home_keywords'); ?>" name="useo_meta_home_keywords" class="useo-text" id="">
+		</div>
+	</div>
+</div>
 

@@ -9,7 +9,7 @@
     Plugin Date: 2017-07-15
     Plugin Author: QA-Themes.com
     Plugin Author URI: http://QA-Themes.com
-    Plugin License: MIT License                           
+    Plugin License: copy lifted                           
     Plugin Minimum Question2Answer Version: 1.5
 */                      
                         

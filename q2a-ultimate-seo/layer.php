@@ -17,6 +17,13 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				$this->meta_description = htmlspecialchars(@$metas['description']);
 				$this->meta_keywords = htmlspecialchars(@$metas['keywords']);
 			}
+		}elseif($this->template=='qa'){
+				$this->meta_title = qa_opt('useo_meta_home_title');
+				$this->meta_description = qa_opt('home_description'); // native option
+				$this->meta_keywords = qa_opt('useo_meta_home_keywords');
+				$this->content['meta_title'] = $this->meta_title;
+				$this->content['description'] = $this->meta_description;
+				$this->content['keywords'] = $this->meta_keywords;
 		}
 		// Generate Social Meta Tags
 		$page_url = @$this->content['canonical'];
@@ -25,11 +32,11 @@ class qa_html_theme_layer extends qa_html_theme_base {
 		else
 			$description = htmlspecialchars(@$this->content['description']);
 		if(! empty($this->meta_title))
-			$title = htmlspecialchars($this->meta_title);
+			$title = $this->meta_title;
 		else
 			$title = htmlspecialchars(@$this->content['q_view']['raw']['title']);
 		
-		if($this->template=='question'){
+		if($this->template=='question' or $this->template=='qa'){
 			if(qa_opt('useo_social_enable_editor')){
 				$this->social_metas = json_decode(qa_db_postmeta_get($this->content['q_view']['raw']['postid'], 'useo-social-info'),true);
 				if(is_array($this->social_metas))
@@ -93,22 +100,22 @@ class qa_html_theme_layer extends qa_html_theme_base {
 					$this->metas['tc-handler']['type'] = 'property="twitter:site"';
 				}
 			}
-			if(qa_opt('useo_social_schema_enable')){ // Twitter Cards
+			if(qa_opt('useo_social_schema_enable')){ // Google+ schema
 				// title
 				$this->metas['gp-title']['content'] = $title;
 				$this->metas['gp-title']['type'] = 'itemprop="name"';
 				// description
-				$this->metas['gp-title']['content'] = $description;
-				$this->metas['gp-title']['type'] = 'itemprop="description"';
+				$this->metas['gp-description']['content'] = $description;
+				$this->metas['gp-description']['type'] = 'itemprop="description"';
 				// type
 				$gp_type = qa_opt('useo_social_schema_page_type');
 				if($gp_type==2)
 					$gp_page_type = 'Question';
 				elseif($gp_type==3)
 					$gp_page_type = 'Article';
-				if( isset($gp_page_type) ){ 
-					$this->metas['gp-title']['content'] = '';
-					$this->metas['gp-title']['type'] = 'itemscope itemtype="http://schema.org/' . $gp_page_type . '"';
+				if( $this->template=='question' and isset($gp_page_type) ){ 
+					$this->metas['gp-type']['content'] = '';
+					$this->metas['gp-type']['type'] = 'itemscope itemtype="http://schema.org/' . $gp_page_type . '"';
 				}
 				// description
 				$gp_image = qa_opt('useo_social_gp_thumbnail');
@@ -180,6 +187,9 @@ class qa_html_theme_layer extends qa_html_theme_base {
 	// add canonical links to category pages
 	function head_metas()
 	{
+		// Q2A Generates meta description and keywords, just adding title here
+		if (strlen(@$this->content['meta_title']))
+			$this->output('<meta name="title" content="'.$this->content['meta_title'].'"/>');
 		qa_html_theme_base::head_metas();
 		if(qa_opt('useo_cat_canonical_enable')){
 			$cat_slugs = useo_get_current_category_slug();
@@ -465,19 +475,19 @@ class qa_html_theme_layer extends qa_html_theme_base {
 					$this->content['description'] = $excerpt;
 				}
 			}
-			// Meta Tags and social meta tags
-			if($this->template=='question'){
-				if(qa_opt('useo_social_enable_editor')){
-					foreach($this->metas as $key => $value)
-						if( isset($this->social_metas[$key]) )
-							$this->output('<meta ' . $value['type'] . ' content="' . $this->social_metas[$key] . '" />' );
-						else
-							$this->output('<meta ' . $value['type'] . ( $value['content'] ? ' content="' . $value['content'] . '"' : '') . ' /> ' );
-				
-				}elseif(qa_opt('useo_social_og_enable_auto')){
-					foreach($this->metas as $key => $value)
+		}
+		// Meta Tags and social meta tags
+		if($this->template=='question' or $this->template=='qa'){
+			if(qa_opt('useo_social_enable_editor')){
+				foreach($this->metas as $key => $value)
+					if( isset($this->social_metas[$key]) )
+						$this->output('<meta ' . $value['type'] . ' content="' . $this->social_metas[$key] . '" />' );
+					else
 						$this->output('<meta ' . $value['type'] . ( $value['content'] ? ' content="' . $value['content'] . '"' : '') . ' /> ' );
-				}
+			
+			}elseif(qa_opt('useo_social_og_enable_auto')){
+				foreach($this->metas as $key => $value)
+					$this->output('<meta ' . $value['type'] . ( $value['content'] ? ' content="' . $value['content'] . '"' : '') . ' /> ' );
 			}
 		}
 	}

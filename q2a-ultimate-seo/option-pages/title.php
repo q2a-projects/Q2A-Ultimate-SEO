@@ -1,18 +1,3 @@
-<?php
-/*
-qa_lang_html('main/recent_qs_title')
-hot_qs_title
-voted_qs_title
-answered_qs_title
-unanswered_qs_title
-unselected_qs_title
-recent_activity_title
-browse_categories
-recent_qs_as_in_x
-popular_tags
-user_x
-*/
-?>
 <h2 class="heading">Page Title</h2>
 <div class="useo-option-header-content">
 	Page Title options let you customize page titles based on available variables in each page or any custom text you like.
