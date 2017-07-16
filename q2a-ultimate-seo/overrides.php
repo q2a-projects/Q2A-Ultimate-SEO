@@ -66,6 +66,8 @@ function qa_tag_html($tag, $microformats=false, $favorited=false)
 function qa_sanitize_html($html, $linksnewwindow=false, $storage=false)
 {
 	$safe=qa_sanitize_html_base($html, $linksnewwindow, $storage);
+	if ($safe == '')
+		return '';
 	$rel_types = array(1 => 'Nofollow', 2 => 'External', 3 => 'Nofollow External', 4 => '');
 	$links_list=json_decode(qa_opt('useo_link_relations'));
 	$dom = new DOMDocument;
