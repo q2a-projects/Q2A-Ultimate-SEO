@@ -235,7 +235,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				break;
 			case 'questions':
 				$category_name = '';
-				if( count(explode('/',$this->request)) > 1 )
+				if( count(explode('/',$this->request)) > 1 && !empty($this->content["q_list"]["qs"]))
 					$category_name = $this->content["q_list"]["qs"][0]["raw"]["categoryname"];
 				$sort = qa_get('sort');
 				if(empty($sort)){
@@ -277,7 +277,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 			case 'unanswered':
 				$sort = qa_get('by');
 				$category_name = '';
-				if( count(explode('/',$this->request)) > 1 )
+				if( count(explode('/',$this->request)) > 1 && !empty($this->content["q_list"]["qs"]))
 					$category_name = $this->content["q_list"]["qs"][0]["raw"]["categoryname"];
 
 				if(empty($sort)){
@@ -307,7 +307,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				$title_template = qa_opt('useo_title_activity');
 				if(! empty($title_template) ){
 					$category_name = '';
-					if( count(explode('/',$this->request)) > 1 )
+					if( count(explode('/',$this->request)) > 1 && !empty($this->content["q_list"]["qs"]))
 						$category_name = $this->content["q_list"]["qs"][0]["raw"]["categoryname"];
 
 					$search = array( '%site-title%', '%recent-activity-title%', '%category-name%');
