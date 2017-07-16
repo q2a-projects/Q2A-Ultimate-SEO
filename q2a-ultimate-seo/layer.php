@@ -12,9 +12,11 @@ class qa_html_theme_layer extends qa_html_theme_base {
 		// Custom Meta(title,description,keywords)
 		if( ($this->template=='question') and (qa_opt('useo_meta_editor_enable')) ){
 			$metas = json_decode(qa_db_postmeta_get($this->content['q_view']['raw']['postid'], 'useo-meta-info'),true);
-			$this->meta_title = htmlspecialchars(@$metas['title']);
-			$this->meta_description = htmlspecialchars(@$metas['description']);
-			$this->meta_keywords = htmlspecialchars(@$metas['keywords']);
+			if (is_array($metas)) {
+				$this->meta_title = htmlspecialchars(@$metas['title']);
+				$this->meta_description = htmlspecialchars(@$metas['description']);
+				$this->meta_keywords = htmlspecialchars(@$metas['keywords']);
+			}
 		}
 		// Generate Social Meta Tags
 		$page_url = @$this->content['canonical'];
@@ -30,7 +32,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 		if($this->template=='question'){
 			if(qa_opt('useo_social_enable_editor')){
 				$this->social_metas = json_decode(qa_db_postmeta_get($this->content['q_view']['raw']['postid'], 'useo-social-info'),true);
-				if(count($this->social_metas))
+				if(is_array($this->social_metas))
 					foreach ($this->social_metas as $index => $variable){
 						$this->metas[$index]['content'] = htmlspecialchars($variable);
 						$this->metas[$index]['type'] = '';
