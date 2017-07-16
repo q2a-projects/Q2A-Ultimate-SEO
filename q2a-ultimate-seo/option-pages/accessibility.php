@@ -21,7 +21,7 @@
 		</div>
 		<div class="useo-option-not-recommended"> * Not Recommended </div>
 	</div>
-	<div class="useo-option-extra-detail">Make site "No-Follow", so search engines won't any of the links on your site.</div>
+	<div class="useo-option-extra-detail">Make site "No-Follow", so search engines won't crawl any of your internal links.</div>
 </div>
 <hr>
 <h2 class="heading">Question Page Accessibility</h2>
