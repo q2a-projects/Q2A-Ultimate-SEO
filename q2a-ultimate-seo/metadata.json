@@ -6,7 +6,7 @@
     "date": "2017-07-15",
     "author": "QA-Themes.com",
     "author_uri": "http://QA-Themes.com",
-    "license": "Copy Lifted",
+    "license": "MIT License",
     "update_uri": "https://raw.githubusercontent.com/q2a-projects/Q2A-Ultimate-SEO/master/q2a-ultimate-seo/master/metadata.json",
     "min_q2a": "1.5",
     "min_php": "5.2.0",
