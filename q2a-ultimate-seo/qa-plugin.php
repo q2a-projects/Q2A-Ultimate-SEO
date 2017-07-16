@@ -2,11 +2,11 @@
         
 /*              
     Plugin Name: Q2A Ultimate SEO
-    Plugin URI: https://github.com/Towhidn/Q2A-Ultimate-SEO/
-    Plugin Update Check URI:  https://github.com/Towhidn/Q2A-Ultimate-SEO/raw/master/q2a-ultimate-seo/qa-plugin.php
-    Plugin Description: SEO Links for Question2Answer
-    Plugin Version: 1.3
-    Plugin Date: 2014-24-1
+    Plugin URI: https://github.com/q2a-projects/Q2A-Ultimate-SEO/
+    Plugin Update Check URI:  https://github.com/q2a-projects/Q2A-Ultimate-SEO/raw/master/q2a-ultimate-seo/qa-plugin.php
+    Plugin Description: SEO for Question2Answer
+    Plugin Version: 1.5
+    Plugin Date: 2017-07-15
     Plugin Author: QA-Themes.com
     Plugin Author URI: http://QA-Themes.com
     Plugin License: copy lifted                           
