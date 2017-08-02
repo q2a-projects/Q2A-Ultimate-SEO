@@ -45,7 +45,7 @@
 function useo_get_base_url()
 {
 	/* First we need to get the protocol the website is using */
-	$protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, 5)) == 'https' ? 'https://' : 'http://';
+	$protocol = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
 
 	/* returns /myproject/index.php */
 	if(QA_URL_FORMAT_NEAT == 0 || strpos($_SERVER['PHP_SELF'],'/index.php/') !== false):
