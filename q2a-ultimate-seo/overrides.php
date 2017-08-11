@@ -75,24 +75,27 @@ function qa_sanitize_html($html, $linksnewwindow=false, $storage=false)
 	$dom->loadHTML(mb_convert_encoding($safe, 'HTML-ENTITIES', $encod));
 	$links = $dom->getElementsByTagName('a');
 	// apply rel change to list of links
-	foreach ($links as $link) {
-		foreach($links_list as $key=>$value)
-		{	
-			$site_url=parse_url($value->url);
-			// add rel attribute according to host address
-			$link_attribute = $link->getAttribute('href');
-			if( (isset($site_url['host'])) && (!(empty($site_url['host']))) && (!(empty($link_attribute))) )
-				if (strpos( strtolower($link->getAttribute('href')) , strtolower($site_url['host']) ))
-					$link->setAttribute('rel', $rel_types[$value->rel]);
+	if(count($links))
+		foreach ($links as $link) {
+			if(count($links_list))
+				foreach($links_list as $key=>$value)
+				{	
+					$site_url=parse_url($value->url);
+					// add rel attribute according to host address
+					$link_attribute = $link->getAttribute('href');
+					if( (isset($site_url['host'])) && (!(empty($site_url['host']))) && (!(empty($link_attribute))) )
+						if (strpos( strtolower($link->getAttribute('href')) , strtolower($site_url['host']) ))
+							$link->setAttribute('rel', $rel_types[$value->rel]);
+				}
 		}
-	}
 	if( qa_opt('useo_links_internal_dofollow') )
 	{
-		foreach ($links as $link) {
-			$site_url=parse_url(qa_opt('site_url'));
-			if (strpos( strtolower($link->getAttribute('href')) , strtolower($site_url['host']) ))
-				$link->setAttribute('rel', '');
-		}
+		if(count($links))
+			foreach ($links as $link) {
+				$site_url=parse_url(qa_opt('site_url'));
+				if (strpos( strtolower($link->getAttribute('href')) , strtolower($site_url['host']) ))
+					$link->setAttribute('rel', '');
+			}
 		$safe = preg_replace('/^<!DOCTYPE.+?>/', '', str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $dom->saveHTML()));
 	}
 	return $safe;
