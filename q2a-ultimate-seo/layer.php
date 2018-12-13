@@ -157,7 +157,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				}
 		}
 		// set category title for navigation
-		if(count(@$this->content['navigation']['cat']) && qa_opt('useo_cat_title_nav_enable')){
+		if(!empty($this->content['navigation']['cat']) && qa_opt('useo_cat_title_nav_enable')){
 			foreach ($this->content['navigation']['cat'] as $index => $item){
 				if(isset($item['categoryid']) && isset($useo_cat_desc_map[$item['categoryid']]))
 					$this->content['navigation']['cat'][$index]["popup"] = $useo_cat_desc_map[$item['categoryid']]['content'];
