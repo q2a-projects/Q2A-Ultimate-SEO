@@ -35,7 +35,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 			$title = $this->meta_title;
 		else
 			$title = htmlspecialchars(@$this->content['q_view']['raw']['title']);
-		
+
 		if($this->template=='question' or $this->template=='qa'){
 			if(qa_opt('useo_social_enable_editor')){
 				$this->social_metas = json_decode(qa_db_postmeta_get($this->content['q_view']['raw']['postid'], 'useo-social-info'),true);
@@ -113,7 +113,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 					$gp_page_type = 'Question';
 				elseif($gp_type==3)
 					$gp_page_type = 'Article';
-				if( $this->template=='question' and isset($gp_page_type) ){ 
+				if( $this->template=='question' and isset($gp_page_type) ){
 					$this->metas['gp-type']['content'] = '';
 					$this->metas['gp-type']['type'] = 'itemscope itemtype="http://schema.org/' . $gp_page_type . '"';
 				}
@@ -144,6 +144,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 			}
 		}
 		// get all category titles
+		if(is_array($categoryid_list)) 
 		if(count($categoryid_list)){
 			$result=qa_db_query_sub(
 				'SELECT categoryid, content FROM ^categorymetas WHERE categoryid IN ($) AND title=$',
@@ -157,6 +158,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				}
 		}
 		// set category title for navigation
+		if(is_array(@$this->content['navigation']['cat']))
 		if(count(@$this->content['navigation']['cat']) && qa_opt('useo_cat_title_nav_enable')){
 			foreach ($this->content['navigation']['cat'] as $index => $item){
 				if(isset($item['categoryid']) && isset($useo_cat_desc_map[$item['categoryid']]))
@@ -209,7 +211,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 			$this->output('<script>' . $variables . '</script>');
 			$this->output('<script src="'.USEO_URL.'/include/seo-forms.js" type="text/javascript"></script>');
 		}
-	}	
+	}
 
 	function head_title()
 	{
@@ -245,6 +247,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				break;
 			case 'questions':
 				$category_name = '';
+				if(is_array(explode('/',$this->request)))
 				if( count(explode('/',$this->request)) > 1 && !empty($this->content["q_list"]["qs"]))
 					$category_name = $this->content["q_list"]["qs"][0]["raw"]["categoryname"];
 				$sort = qa_get('sort');
@@ -317,6 +320,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				$title_template = qa_opt('useo_title_activity');
 				if(! empty($title_template) ){
 					$category_name = '';
+					if(is_array(explode('/',$this->request)))
 					if( count(explode('/',$this->request)) > 1 && !empty($this->content["q_list"]["qs"]))
 						$category_name = $this->content["q_list"]["qs"][0]["raw"]["categoryname"];
 
@@ -394,7 +398,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 			qa_html_theme_base::head_title();
 		else
 			$this->output('<title>'.$title.'</title>');
-		
+
 	// Page Meta Tags
 		$noindex = qa_opt('useo_access_noindex');
 		$nofollow = qa_opt('useo_access_nofollow');
@@ -484,7 +488,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 						$this->output('<meta ' . $value['type'] . ' content="' . $this->social_metas[$key] . '" />' );
 					else
 						$this->output('<meta ' . $value['type'] . ( $value['content'] ? ' content="' . $value['content'] . '"' : '') . ' /> ' );
-			
+
 			}elseif(qa_opt('useo_social_og_enable_auto')){
 				foreach($this->metas as $key => $value)
 					$this->output('<meta ' . $value['type'] . ( $value['content'] ? ' content="' . $value['content'] . '"' : '') . ' /> ' );
@@ -496,7 +500,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 		qa_html_theme_base::main_parts($content);
 
 		if( (qa_get_logged_in_level() >= QA_USER_LEVEL_ADMIN) and ($this->template=='question') and (qa_opt('useo_meta_editor_enable')) ){
-			
+
 			$this->output('<div class="qa-widgets-main qa-widgets-main-low">');
 			$this->output('<form name="useo-meta-editor" action="'.qa_self_html().'" method="post">');
 			$this->output('
@@ -554,7 +558,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 			$this->output('<hr /></div>');
 		}
 		if( (qa_get_logged_in_level() >= QA_USER_LEVEL_ADMIN) and ($this->template=='question') and (qa_opt('useo_social_enable_editor')) ){
-			
+
 			$this->output('<div class="qa-widgets-main qa-widgets-main-low">');
 			$this->output('<form name="useo-meta-editor" action="'.qa_self_html().'" method="post">');
 			$this->output('
@@ -701,7 +705,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 			$this->output('</form>');
 			$this->output('<hr /></div>');
 		}
-		
+
 	}
 	function post_tag_item($taghtml, $class)
 	{
@@ -709,16 +713,17 @@ class qa_html_theme_layer extends qa_html_theme_base {
 		global
 			$useo_tag_desc_list, // Already filled in qa-tag-desc-overrides.php  -  All tags used in this page are listed in this array
 			$plugin_tag_map;       // here it will be filled with tag's meta descriptions
-		if (count(@$useo_tag_desc_list)) {
+
+		if (!empty(@$useo_tag_desc_list)) {
 			$result=qa_db_query_sub(
 				'SELECT tag, title, content FROM ^tagmetas WHERE tag IN ($)',
 				array_keys($useo_tag_desc_list)
 			);
-			
+
 			$useo_tag_desc_map=qa_db_read_all_assoc($result);
 
 			$useo_tag_desc_list=null;
-			
+
 			$plugin_tag_map=array();
 			foreach ($useo_tag_desc_map as &$value) {
 				if ($value['title']=='title') $plugin_tag_map[$value['tag']]['title'] = $value['content'];
@@ -743,8 +748,8 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				 $a->insertBefore($element, $a->firstChild);
 			}
 		}
-		
-		$taghtml= $html->saveHTML(); 
+
+		$taghtml= $html->saveHTML();
 		qa_html_theme_base::post_tag_item($taghtml, $class);
 	}
 	// category link titles
@@ -764,7 +769,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 		if ($this->template=='tags')
 		{
 			global $useo_tag_desc_list; // Already filled in qa-tag-desc-overrides.php  -  All tags used in this page are listed in this array
-			
+
 			if (count(@$useo_tag_desc_list)) {
 				// Get all tag meta in this query
 				$result=qa_db_query_sub(
@@ -796,11 +801,10 @@ class qa_html_theme_layer extends qa_html_theme_base {
 							$a->insertBefore($element, $a->firstChild);
 						}
 					}
-					$item['label']= $html->saveHTML(); 				
+					$item['label']= $html->saveHTML();
 				}
 			}
 		}
 		qa_html_theme_base::ranking($ranking);
 	}
 }
-
