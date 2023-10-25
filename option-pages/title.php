@@ -162,14 +162,14 @@
 </div>
 <hr>
 <div class="useo-option-container">
-	<div class="useo-option-detail">Title for "Categories Item Page":</div>
+	<div class="useo-option-detail">Title for "Category Items Page":</div>
 	<div class="useo-option-content">
 		<div class="useo-text-container">
 			<input type="text" value="<?php echo qa_opt('useo_title_category'); ?>" name="useo_title_category" class="useo-text" id="">
 		</div>
 	</div>
   <div class="useo-option-extra-detail">
-	available title variables for this page: <strong>%site-title%</strong>, <strong>%recent-qs-as-in-x%</strong>
+	available title variables for this page: <strong>%site-title%</strong>, <strong>%category-name%</strong>(for category name in Q2A options), <strong>%category-title%</strong>(for category link title in plugin's category widget)
   </div>
 </div>
 <hr>

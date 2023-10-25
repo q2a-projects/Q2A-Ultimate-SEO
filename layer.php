@@ -218,11 +218,24 @@ class qa_html_theme_layer extends qa_html_theme_base {
 		$title = '';
 		switch ($this->template) {
 			case 'qa':
-				$title_template = qa_opt('useo_title_qa');
-				if(! empty($title_template) ){
-					$search = array( '%site-title%');
-					$replace   = array(qa_opt('site_title'));
-					$title = str_replace($search, $replace, $title_template);
+				if ( (isset($this->content["categoryids"])) && (!(empty($this->content["categoryids"])))){
+					if( count(explode('/',$this->request)) >= 1 && !empty($this->content["q_list"]["qs"])){
+						$category_name = $this->content["q_list"]["qs"][0]["raw"]["categoryname"];
+						$category_title = qa_html(qa_db_categorymeta_get($this->content["q_list"]["qs"][0]["raw"]["categoryid"], 'useo_cat_title'));
+						$title_template = qa_opt('useo_title_category');
+						if(! empty($title_template) ){
+							$search = array('%site-title%', '%category-name%', '%category-title%');
+							$replace = array(qa_opt('site_title'), $category_name, $category_title);
+							$title = str_replace($search, $replace, $title_template);
+						}
+					}
+				}else{
+					$title_template = qa_opt('useo_title_qa');
+					if(! empty($title_template) ){
+						$search = array( '%site-title%');
+						$replace   = array(qa_opt('site_title'));
+						$title = str_replace($search, $replace, $title_template);
+					}
 				}
 				break;
 			case 'question':
