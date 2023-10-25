@@ -38,14 +38,16 @@ class useo_category_widget {
 		*/
 		
 		$slugs = useo_get_current_category_slug();
-		$countslugs=count($slugs);
-		
+		if( is_array($slugs) ){
+			$countslugs = count($slugs);
+		} else {
+			$countslugs = 0;
+		}
+
 		list($categories, $categoryid)=qa_db_select_with_pending(
 			qa_db_category_nav_selectspec($slugs, false, false, true),
 			$countslugs ? qa_db_slugs_to_category_id_selectspec($slugs) : null
 		);
-		
-		
 		
 		if ( $countslugs && isset($categoryid) ) {
 			/*

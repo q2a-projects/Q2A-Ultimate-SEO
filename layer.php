@@ -37,7 +37,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 			$title = htmlspecialchars(@$this->content['q_view']['raw']['title']);
 		
 		if($this->template=='question' or $this->template=='qa'){
-			if(qa_opt('useo_social_enable_editor')){
+			if(!empty($this->content['q_view']) && qa_opt('useo_social_enable_editor')){
 				$this->social_metas = json_decode(qa_db_postmeta_get($this->content['q_view']['raw']['postid'], 'useo-social-info'),true);
 				if(is_array($this->social_metas))
 					foreach ($this->social_metas as $index => $variable){
@@ -144,7 +144,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 			}
 		}
 		// get all category titles
-		if(count($categoryid_list)){
+		if(is_array(@$categoryid_list) && count($categoryid_list)){
 			$result=qa_db_query_sub(
 				'SELECT categoryid, content FROM ^categorymetas WHERE categoryid IN ($) AND title=$',
 				$categoryid_list,'useo_cat_title'
@@ -157,7 +157,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 				}
 		}
 		// set category title for navigation
-		if(count(@$this->content['navigation']['cat']) && qa_opt('useo_cat_title_nav_enable')){
+		if(is_array(@$this->content['navigation']['cat']) && count($this->content['navigation']['cat']) && qa_opt('useo_cat_title_nav_enable')){
 			foreach ($this->content['navigation']['cat'] as $index => $item){
 				if(isset($item['categoryid']) && isset($useo_cat_desc_map[$item['categoryid']]))
 					$this->content['navigation']['cat'][$index]["popup"] = $useo_cat_desc_map[$item['categoryid']]['content'];
@@ -193,7 +193,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 		qa_html_theme_base::head_metas();
 		if(qa_opt('useo_cat_canonical_enable')){
 			$cat_slugs = useo_get_current_category_slug();
-			if($cat_slugs){ // it's a category page
+			if(!empty($cat_slugs)){ // it's a category page
 				$path = qa_path_absolute(implode('/', $cat_slugs));
 				$this->output('<link rel="canonical" href="' . $path . '">');
 			}
@@ -228,7 +228,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 			case 'question':
 				$category_name = '';
 				if ( (isset($this->content["categoryids"])) && (!(empty($this->content["categoryids"]))))
-						$category_name = $this->content["q_view"]["raw"]["categoryname"];
+					$category_name = $this->content["q_view"]["raw"]["categoryname"];
 
 				if(empty($this->meta_title)){
 					// title customization
@@ -709,7 +709,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 		global
 			$useo_tag_desc_list, // Already filled in qa-tag-desc-overrides.php  -  All tags used in this page are listed in this array
 			$plugin_tag_map;       // here it will be filled with tag's meta descriptions
-		if (count(@$useo_tag_desc_list)) {
+		if (!empty(@$useo_tag_desc_list)) {
 			$result=qa_db_query_sub(
 				'SELECT tag, title, content FROM ^tagmetas WHERE tag IN ($)',
 				array_keys($useo_tag_desc_list)
@@ -765,7 +765,7 @@ class qa_html_theme_layer extends qa_html_theme_base {
 		{
 			global $useo_tag_desc_list; // Already filled in qa-tag-desc-overrides.php  -  All tags used in this page are listed in this array
 			
-			if (count(@$useo_tag_desc_list)) {
+			if (is_array(@$useo_tag_desc_list) && count(@$useo_tag_desc_list)) {
 				// Get all tag meta in this query
 				$result=qa_db_query_sub(
 					'SELECT tag, title, content FROM ^tagmetas WHERE tag IN ($)',

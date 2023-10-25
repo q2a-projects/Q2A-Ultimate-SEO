@@ -28,7 +28,7 @@
 </div>
 <?php 
 $relations = json_decode(qa_opt('useo_link_relations'),true);
-if( count($relations) )
+if( !empty($relations) )
 	foreach($relations as $key => $value){
 		$rel[$value['rel']] = 'selected=""';
 		'selected=""';
