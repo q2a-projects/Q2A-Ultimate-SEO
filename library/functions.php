@@ -7,10 +7,12 @@ if (!(function_exists('v'))) {
 		echo '</pre>';
 	}
 }
-function useo_get_host($Address) {
-   $parseUrl = parse_url(trim($Address));
-   return @trim($parseUrl[host] ? $parseUrl[host] : array_shift(explode('/', $parseUrl[path], 2)));
-} 
+
+function useo_get_host($html) {
+   $parseUrl = parse_url(trim($html));
+   return @trim($parseUrl["host"] ? $parseUrl["host"] : array_shift(explode('/', $parseUrl["path"], 2)));
+}
+
 function useo_reset_settings(){
 	require_once QA_INCLUDE_DIR.'qa-app-options.php';
 	

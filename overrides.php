@@ -75,7 +75,7 @@ function qa_sanitize_html($html, $linksnewwindow=false, $storage=false)
 	$dom->loadHTML(mb_convert_encoding($safe, 'HTML-ENTITIES', $encod));
 	$links = $dom->getElementsByTagName('a');
 	// apply rel change to list of links
-	if(count($links))
+	if(is_array(@$links) && count($links))
 		foreach ($links as $link) {
 			if(count($links_list))
 				foreach($links_list as $key=>$value)
@@ -90,7 +90,7 @@ function qa_sanitize_html($html, $linksnewwindow=false, $storage=false)
 		}
 	if( qa_opt('useo_links_internal_dofollow') )
 	{
-		if(count($links))
+		if(is_array(@$links) && count($links))
 			foreach ($links as $link) {
 				$site_url=parse_url(qa_opt('site_url'));
 				if (strpos( strtolower($link->getAttribute('href')) , strtolower($site_url['host']) ))
@@ -104,20 +104,22 @@ function qa_sanitize_html($html, $linksnewwindow=false, $storage=false)
 function qa_html_convert_urls($html, $newwindow=false)
 {
 	$host=useo_get_host($html);
-    $rel_types = array(1 => 'Nofollow', 2 => 'External', 3 => 'Nofollow External', 4 => '');
+    $rel_types = array(1 => 'nofollow', 2 => 'external', 3 => 'external nofollow', 4 => 'dofollow');
 	$links_list=json_decode(qa_opt('useo_link_relations'));
 	$rel='nofollow';
-	if(count($links_list))
+	if(is_array(@$links_list) && count($links_list)){
 		foreach($links_list as $key=>$value)
 			if (useo_get_host($value->url) == $host){
 				$rel=$rel_types[$value->rel];
 			}
+	}
 	if( qa_opt('useo_links_internal_dofollow') ){
 		$host = useo_get_host($html);
 		$site_url=parse_url(qa_opt('site_url'));
 		if($host==$site_url['host'])
 			$rel = 'dofollow';
 	}
+
 	return substr(preg_replace('/([^A-Za-z0-9])((http|https|ftp):\/\/([^\s&<>"\'\.])+\.([^\s&<>"\']|&amp;)+)/i', '\1<a href="\2" rel="'. $rel .'"'.($newwindow ? ' target="_blank"' : '').'>\2</a>', ' '.$html.' '), 1, -1);
 }
 
